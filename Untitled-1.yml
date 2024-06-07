@@ -1,0 +1,302 @@
+openapi: '3.0.2'
+info:
+  title: Toko Buku Makmur Anjay
+  version: '1.0'
+servers:
+  - url: localhost:3000/api
+paths:
+  /admins:
+    get:
+      tags:
+        - "Admin API"
+      description: List All Admins
+      summary: List All Admins
+      responses:
+        '200':
+          description: Success Get All Admins
+          content:
+            application/json :
+              schema :
+                type: object
+                properties:
+                  code : 
+                    type : number
+                  status :
+                    type: string
+                  data :
+                    type : array
+                    items :
+                      $ref : '#/components/schemas/Admin'
+        500:
+          description: Internal Server Error  
+    post: 
+      tags:
+        - "Admin API"
+      description: Create New Admin
+      summary: Create New Admin
+      requestBody :
+        content:
+          application/json:
+            schema:
+              $ref : '#/components/schemas/CreateOrUpdateAdmins'
+      responses: 
+        200:
+          description : Success Create Admin
+          content:
+            application/json :
+              schema:
+                type: object
+                properties:
+                  code :
+                    type : number
+                  status : 
+                    type : string
+                  data :
+                    $ref : '#/components/schemas/Admin'
+  /admins/{adminsId}:
+    get:
+      tags:
+        - "Admin API"
+      summary: Get Admin By Id
+      description: Get Admin By Id
+      parameters:
+        - name: adminsId
+          in: path
+          description: Admin
+          required: true
+          schema:
+            type : number
+      responses:
+        200:
+          description: "Success Get Admin"
+          content:
+            application/json :
+              schema:
+                type: object
+                properties:
+                  code :
+                    type : number
+                  status : 
+                    type : string
+                  data :
+                    $ref : '#/components/schemas/Admin'
+    put:
+      tags:
+        - "Admin API"
+      summary: Update Admin By Id
+      description: Update Admin By Id
+      parameters:
+        - name: adminsId
+          in: path
+          description: Admin
+          required: true
+          schema:
+            type : number
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref : '#/components/schemas/CreateOrUpdateAdmins'
+
+      responses:
+        200:
+          description: "Success Update Admin"
+          content:
+            application/json :
+              schema:
+                type: object
+                properties:
+                  code :
+                    type : number
+                  status : 
+                    type : string
+                  data :
+                    $ref : '#/components/schemas/Admin'
+    delete:
+      tags:
+        - "Admin API"
+      summary: Delete Admin By Id
+      description: Delete Admin By Id
+      parameters:
+        - name: adminsId
+          in: path
+          description: Admin
+          required: true
+          schema:
+            type : number
+      responses:
+        200:
+          description: "Success Delete Admin"
+          content:
+            application/json :
+              schema:
+                type: object
+                properties:
+                  code :
+                    type : number
+                  status : 
+                    type : string
+  /members:
+    get:
+      tags:
+        - "Member API"
+      description: List All Members
+      summary: List All Members
+      responses:
+        '200':
+          description: Success Get All Members
+          content:
+            application/json :
+              schema :
+                type: object
+                properties:
+                  code : 
+                    type : number
+                  status :
+                    type: string
+                  data :
+                    type : array
+                    items :
+                      $ref : '#/components/schemas/Members'
+    post:
+      tags:
+        - "Member API"
+      description: Create New Member
+      summary: Create New Member
+      requestBody :
+        content:
+          application/json:
+            schema:
+              $ref : '#/components/schemas/CreateOrUpdateMembers'
+      responses: 
+        200:
+          description : Success Create Member
+          content:
+            application/json :
+              schema:
+                type: object
+                properties:
+                  code :
+                    type : number
+                  status : 
+                    type : string
+                  data :
+                    $ref : '#/components/schemas/Members'
+  /members/{memberId}:
+    get:
+      tags:
+        - "Member API"
+      summary: Get Member By Id
+      description: Get Member By Id
+      parameters:
+        - name: MembernsId
+          in: path
+          description: Member
+          required: true
+          schema:
+            type : number
+      responses:
+        200:
+          description: "Success Get Member"
+          content:
+            application/json :
+              schema:
+                type: object
+                properties:
+                  code :
+                    type : number
+                  status : 
+                    type : string
+                  data :
+                    $ref : '#/components/schemas/Members'
+    put:
+      tags:
+        - "Member API"
+      summary: Update Member By Id
+      description: Update Member By Id
+      parameters:
+        - name: membersId
+          in: path
+          description: Member
+          required: true
+          schema:
+            type : number
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref : '#/components/schemas/CreateOrUpdateMembers'
+      responses:
+        200:
+          description: "Success Update Member"
+          content:
+            application/json :
+              schema:
+                type: object
+                properties:
+                  code :
+                    type : number
+                  status : 
+                    type : string
+                  data :
+                    $ref : '#/components/schemas/Members'
+    delete:
+      tags:
+        - "Member API"
+      summary: Delete Member By Id
+      description: Delete Member By Id
+      parameters:
+        - name: membersId
+          in: path
+          description: Member
+          required: true
+          schema:
+            type : number
+      responses:
+        200:
+          description: "Success Delete Member"
+          content:
+            application/json :
+              schema:
+                type: object
+                properties:
+                  code :
+                    type : number
+                  status : 
+                    type : string
+
+components:
+  schemas:
+    CreateOrUpdateAdmins:
+      type: object
+      properties:
+        username:
+          type : string
+        password:
+          type: string
+        nama_lengkap:
+          type : string
+    Admin:
+      type: object
+      properties:
+        id_admin :
+          type : number
+        username:
+          type : string
+        password:
+          type: string
+        nama_lengkap:
+          type : string
+    CreateOrUpdateMembers:
+      type: object
+      properties:
+        nama_lengkap:
+          type: string
+
+    Members:
+      type: object
+      properties:
+        id_member :
+          type: number
+        nama_lengkap:
+          type: string

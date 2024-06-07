@@ -1,0 +1,95 @@
+package controller
+
+import (
+	"net/http"
+	"strconv"
+	"toko-buku/helper"
+	"toko-buku/model/web"
+	"toko-buku/service"
+
+	"github.com/julienschmidt/httprouter"
+)
+
+type AdminControllerImpl struct {
+	AdminService service.AdminService
+}
+
+func NewAdminController(adminService service.AdminService) AdminController {
+	return &AdminControllerImpl{
+		AdminService: adminService,
+	}
+}
+
+func (controller *AdminControllerImpl) Create(writer http.ResponseWriter, request *http.Request, params httprouter.Params) {
+	AdminCreateRequest := web.AdminCreateRequest{}
+	helper.ReadFromRequestBody(request, &AdminCreateRequest)
+
+	adminResponse := controller.AdminService.Create(request.Context(), AdminCreateRequest)
+	webResponse := web.WebResponse{
+		Code:   200,
+		Status: "OK",
+		Data:   adminResponse,
+	}
+
+	helper.WriteToResponseBody(writer, webResponse)
+}
+
+func (controller *AdminControllerImpl) Update(writer http.ResponseWriter, request *http.Request, params httprouter.Params) {
+	adminUpdateRequest := web.AdminUpdateRequest{}
+	helper.ReadFromRequestBody(request, &adminUpdateRequest)
+
+	adminId := params.ByName("adminId")
+	id, err := strconv.Atoi(adminId)
+	helper.PanicIfError(err)
+
+	adminUpdateRequest.Id = id
+
+	adminResponse := controller.AdminService.Update(request.Context(), adminUpdateRequest)
+	webResponse := web.WebResponse{
+		Code:   200,
+		Status: "OK",
+		Data:   adminResponse,
+	}
+
+	helper.WriteToResponseBody(writer, webResponse)
+}
+
+func (controller *AdminControllerImpl) Delete(writer http.ResponseWriter, request *http.Request, params httprouter.Params) {
+	adminId := params.ByName("adminId")
+	id, err := strconv.Atoi(adminId)
+	helper.PanicIfError(err)
+
+	controller.AdminService.Delete(request.Context(), id)
+	webResponse := web.WebResponse{
+		Code:   200,
+		Status: "OK",
+	}
+
+	helper.WriteToResponseBody(writer, webResponse)
+}
+
+func (controller *AdminControllerImpl) FindById(writer http.ResponseWriter, request *http.Request, params httprouter.Params) {
+	adminId := params.ByName("adminId")
+	id, err := strconv.Atoi(adminId)
+	helper.PanicIfError(err)
+
+	adminResponse := controller.AdminService.FindById(request.Context(), id)
+	webResponse := web.WebResponse{
+		Code:   200,
+		Status: "OK",
+		Data:   adminResponse,
+	}
+
+	helper.WriteToResponseBody(writer, webResponse)
+}
+
+func (controller *AdminControllerImpl) FindAll(writer http.ResponseWriter, request *http.Request, params httprouter.Params) {
+	adminResponses := controller.AdminService.FindAll(request.Context())
+	webResponse := web.WebResponse{
+		Code:   200,
+		Status: "OK",
+		Data:   adminResponses,
+	}
+
+	helper.WriteToResponseBody(writer, webResponse)
+}
