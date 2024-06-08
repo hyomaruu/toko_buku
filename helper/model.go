@@ -27,6 +27,12 @@ func ToMemberResponse(member domain.Member) web.MemberResponse {
 	return web.MemberResponse{
 		Id : member.Id,
 		Name: member.Name,
+<<<<<<< HEAD
+		Email: member.Email,
+		Telepon: member.Telepon,
+		Alamat: member.Alamat,
+=======
+>>>>>>> 7a1f8e50849a6ee819f6ea835677610a48fcb3f0
 
 
 	}

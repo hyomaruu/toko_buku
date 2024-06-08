@@ -37,6 +37,12 @@ func(service *MemberServiceImpl) Create(ctx context.Context, request web.MemberC
 	member := domain.Member{
 		Id: request.Id,
 		Name: request.Name,
+<<<<<<< HEAD
+		Email: request.Email,
+		Telepon: request.Telepon,
+		Alamat: request.Alamat,
+=======
+>>>>>>> 7a1f8e50849a6ee819f6ea835677610a48fcb3f0
 	}
 
 	member = service.MemberRepository.Save(ctx,tx,member)
@@ -54,6 +60,12 @@ func(service *MemberServiceImpl) Update(ctx context.Context, request web.MemberU
 	}
 
 	member.Name = request.Name
+<<<<<<< HEAD
+	member.Email = request.Email
+	member.Telepon = request.Telepon
+	member.Alamat = request.Alamat
+=======
+>>>>>>> 7a1f8e50849a6ee819f6ea835677610a48fcb3f0
 
 	member = service.MemberRepository.Update(ctx,tx,member)
 	return helper.ToMemberResponse(member)
