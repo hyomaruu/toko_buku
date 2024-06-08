@@ -35,11 +35,10 @@ func (service *AdminServiceImpl) Create(ctx context.Context, request web.AdminCr
 	defer helper.CommitOrRollback(tx)
 
 	admin := domain.Admin{
-		Id: request.Id,
 		Username: request.Username,
 		Password: request.Password,
 		Name: request.Name,
-
+		Role: request.Role,
 	}
 
 	admin = service.AdminRepository.Save(ctx,tx, admin)
@@ -60,6 +59,7 @@ func (service *AdminServiceImpl) Update(ctx context.Context, request web.AdminUp
 	admin.Username = request.Username
 	admin.Password =request.Password
 	admin.Name = request.Name
+	admin.Role = request.Role
 
 	admin = service.AdminRepository.Update(ctx,tx, admin)
 	return helper.ToAdminResponse(admin)
