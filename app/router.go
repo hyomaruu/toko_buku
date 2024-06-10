@@ -1,6 +1,7 @@
 package app
 
 import (
+	"net/http"
 	"toko-buku/controller"
 	"toko-buku/exception"
 
@@ -9,6 +10,8 @@ import (
 
 func NewRouter(adminController controller.AdminController,memberController controller.MemberController, bukuController controller.BukuController, aksesorisController controller.AksesorisController) *httprouter.Router{
 	router := httprouter.New()
+
+	directoryPath := "uploaded-images"
 
 	//admin
 	router.GET("/api/admins", adminController.FindAll)
@@ -39,6 +42,8 @@ func NewRouter(adminController controller.AdminController,memberController contr
 	router.PUT("/api/aksesoris/:aksesorisId",aksesorisController.Update)
 	router.DELETE("/api/aksesoris/:aksesorisId",aksesorisController.Delete)
 
-	
+
+	router.ServeFiles("/uploaded-images/*filepath", http.Dir(directoryPath))
+
 	return router
 }

@@ -1,9 +1,20 @@
 package helper
 
 import (
-	"net/http"
 	"encoding/json"
+	"net/http"
 )
+
+func ReadFromRequestFormData(request *http.Request, result interface{}){
+
+	// ReadFromRequestBody
+
+
+	// decoder := json.NewDecoder(request.Body)
+	// err := decoder.Decode(result)
+	// PanicIfError(err)
+}
+
 
 func ReadFromRequestBody(request *http.Request, result interface{}){
 	decoder := json.NewDecoder(request.Body)

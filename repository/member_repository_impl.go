@@ -16,27 +16,31 @@ func NewMemberRepository() MemberRepository {
 }
 
 func (repository *MemberRepositoryImpl) Save(ctx context.Context, tx *sql.Tx, member domain.Member) domain.Member {
-	SQL := "insert into data_member(id_member,nama_lengkap,email,telepon,alamat) values (?,?,?,?,?)"
+	SQL := "insert into data_member(nama_lengkap,email,telepon,alamat) values (?,?,?,?)"
 
-	_, err := tx.ExecContext(ctx, SQL, member.Id, member.Name, member.Email, member.Telepon, member.Alamat)
+	val, err := tx.ExecContext(ctx, SQL, member.Name, member.Email, member.Telepon, member.Alamat)
 	helper.PanicIfError(err)
+
+	id, err := val.LastInsertId()
+
+	member.Id = id
 
 	return member
 }
-func (repository *MemberRepositoryImpl) Update(ctx context.Context, tx *sql.Tx, member domain.Member) domain.Member {
+func (repository *MemberRepositoryImpl) Update(ctx context.Context, tx *sql.Tx, member domain.Member, memberId int) domain.Member {
 	SQL := "update data_member set nama_lengkap = ?,email = ?, telepon = ?, alamat = ? where id_member = ?"
-	_, err := tx.ExecContext(ctx, SQL, member.Name, member.Email, member.Telepon, member.Alamat, member.Id)
+	_, err := tx.ExecContext(ctx, SQL, member.Name, member.Email, member.Telepon, member.Alamat, memberId)
 	helper.PanicIfError(err)
 
 	return member
 }
-func (repository *MemberRepositoryImpl) Delete(ctx context.Context, tx *sql.Tx, member domain.Member) {
+func (repository *MemberRepositoryImpl) Delete(ctx context.Context, tx *sql.Tx, memberId int) {
 	SQL := "delete from data_member where id_member = ?"
-	_, err := tx.ExecContext(ctx, SQL, member.Id)
+	_, err := tx.ExecContext(ctx, SQL, memberId)
 	helper.PanicIfError(err)
 }
 func (repository *MemberRepositoryImpl) FindById(ctx context.Context, tx *sql.Tx, memberId int) (domain.Member, error) {
-	SQL := "select id_member, nama_lengkap,email,telepon,alamat from data_member where id_member = ?"
+	SQL := "select id_member, nama_lengkap, email, telepon, alamat from data_member where id_member = ?"
 	rows, err := tx.QueryContext(ctx, SQL, memberId)
 	helper.PanicIfError(err)
 	defer rows.Close()
@@ -51,7 +55,7 @@ func (repository *MemberRepositoryImpl) FindById(ctx context.Context, tx *sql.Tx
 	}
 }
 func (repository *MemberRepositoryImpl) FindAll(ctx context.Context, tx *sql.Tx) []domain.Member {
-	SQL := "select * from data_member"
+	SQL := "select id_member, nama_lengkap, email, telepon, alamat from data_member"
 	rows, err := tx.QueryContext(ctx, SQL)
 	helper.PanicIfError(err)
 	defer rows.Close()

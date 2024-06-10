@@ -18,23 +18,23 @@ func NewBukuRepository() BukuRepository {
 func (repository *BukuRepositoryImpl) Save(ctx context.Context, tx *sql.Tx, buku domain.Buku) domain.Buku {
 	SQL := "insert into data_buku(kode_buku,nama_buku,penerbit,gambar,pengarang,genre,rilis,harga) values (?,?,?,?,?,?,?,?)"
 
-	_, err := tx.ExecContext(ctx, SQL, buku.Id, buku.Name, buku.Penerbit, buku.Image, buku.Pengarang, buku.Genre,buku.Rilis, buku.Harga)
+	_, err := tx.ExecContext(ctx, SQL, buku.Id, buku.Name, buku.Penerbit, buku.Image, buku.Pengarang, buku.Genre, buku.Rilis, buku.Harga)
 	helper.PanicIfError(err)
 
 	return buku
 }
 
-func (repository *BukuRepositoryImpl) Update(ctx context.Context, tx *sql.Tx, buku domain.Buku) domain.Buku {
+func (repository *BukuRepositoryImpl) Update(ctx context.Context, tx *sql.Tx, buku domain.Buku, bukuId string) domain.Buku {
 	SQL := "update data_buku set nama_buku = ?,penerbit = ?,gambar = ?,pengarang = ?,genre =?,rilis = ?,harga = ? where kode_buku = ?"
-	_, err := tx.ExecContext(ctx, SQL, buku.Name, buku.Penerbit, buku.Image, buku.Pengarang, buku.Genre, buku.Rilis, buku.Harga, buku.Id)
+	_, err := tx.ExecContext(ctx, SQL, buku.Name, buku.Penerbit, buku.Image, buku.Pengarang, buku.Genre, buku.Rilis, buku.Harga, bukuId)
 	helper.PanicIfError(err)
 
 	return buku
 }
 
-func (repository *BukuRepositoryImpl) Delete(ctx context.Context, tx *sql.Tx, buku domain.Buku) {
+func (repository *BukuRepositoryImpl) Delete(ctx context.Context, tx *sql.Tx, bukuId string) {
 	SQL := "delete from data_buku where kode_buku = ?"
-	_, err := tx.ExecContext(ctx, SQL, buku.Id)
+	_, err := tx.ExecContext(ctx, SQL, bukuId)
 	helper.PanicIfError(err)
 
 }

@@ -2,7 +2,6 @@ package web
 
 
 type BukuUpdateRequest struct {
-	Id        string    `validate:"required" json:"kode_buku"`
 	Name      string    `validate:"required" json:"nama_buku"`
 	Penerbit  string    `validate:"required" json:"penerbit"`
 	Image     string    `json:"gambar"`

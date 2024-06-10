@@ -14,7 +14,6 @@ import (
 )
 
 func main() {
-
 	validate := validator.New()
 	db := app.NewDB()
 	adminRepository := repository.NewAdminRepositry()
@@ -34,6 +33,7 @@ func main() {
 	aksesorisController := controller.NewAksesorisController(aksesorisService)
 
 	router := app.NewRouter(adminController,memberController, bukuController,aksesorisController)
+
 	server := http.Server{
 		Addr: "localhost:3000",
 		Handler: router,
@@ -42,3 +42,5 @@ func main() {
 	err := server.ListenAndServe()
 	helper.PanicIfError(err)
 }
+
+

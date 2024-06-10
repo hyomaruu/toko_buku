@@ -30,8 +30,6 @@ func ToMemberResponse(member domain.Member) web.MemberResponse {
 		Email: member.Email,
 		Telepon: member.Telepon,
 		Alamat: member.Alamat,
-
-
 	}
 }
 
@@ -46,8 +44,6 @@ func ToMemberResponses(members []domain.Member) []web.MemberResponse  {
 func ToBukuResponse(buku domain.Buku) web.BukuResponse{
 
 	Rilises := buku.Rilis.Format("2006-01-02")
-
-
 	
 	return web.BukuResponse{
 		Id: buku.Id,
@@ -74,6 +70,7 @@ func ToAksesorisResponse(aksesoris domain.Aksesoris) web.AksesorisResponse{
 		Id: aksesoris.Id,
 		Name: aksesoris.Name,
 		Harga: aksesoris.Harga,
+		Stok: aksesoris.Stok,
 	}
 }
 

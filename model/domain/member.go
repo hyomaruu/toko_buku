@@ -1,7 +1,7 @@
 package domain
 
 type Member struct {
-	Id       int
+	Id       int64
 	Name     string
 	Email	 string
 	Telepon	 string

@@ -53,19 +53,18 @@ func (service *BukuServiceImpl) Create(ctx context.Context, request web.BukuCrea
 	return helper.ToBukuResponse(buku)
 }
 
-func (service *BukuServiceImpl) Update(ctx context.Context, request web.BukuUpdateRequest) web.BukuResponse {
+func (service *BukuServiceImpl) Update(ctx context.Context, request web.BukuUpdateRequest, bukuId string) web.BukuResponse {
 	tx, err := service.DB.Begin()
 	helper.PanicIfError(err)
 	defer helper.CommitOrRollback(tx)
 	Rilis,_ := time.Parse("2006-01-02", request.Rilis)
 
-	buku, err := service.BukuRepository.FindById(ctx, tx, request.Id)
+	buku, err := service.BukuRepository.FindById(ctx, tx, bukuId)
 	if err != nil {
 		panic(exception.NewNotFoundError(err.Error()))
 	}
 	
 
-	buku.Id = request.Id
 	buku.Name = request.Name
 	buku.Penerbit = request.Penerbit
 	buku.Image = request.Image
@@ -74,7 +73,7 @@ func (service *BukuServiceImpl) Update(ctx context.Context, request web.BukuUpda
 	buku.Rilis = Rilis
 	buku.Harga = request.Harga
 
-	buku = service.BukuRepository.Update(ctx, tx, buku)
+	buku = service.BukuRepository.Update(ctx, tx, buku, bukuId)
 	return helper.ToBukuResponse(buku)
 }
 
@@ -83,11 +82,11 @@ func (service *BukuServiceImpl) Delete(ctx context.Context, bukuId string) {
 	helper.PanicIfError(err)
 	defer helper.CommitOrRollback(tx)
 
-	buku, err := service.BukuRepository.FindById(ctx, tx, bukuId)
+	_, err = service.BukuRepository.FindById(ctx, tx, bukuId)
 	if err != nil {
 		panic(exception.NewNotFoundError(err.Error()))
 	}
-	service.BukuRepository.Delete(ctx, tx, buku)
+	service.BukuRepository.Delete(ctx, tx, bukuId)
 }
 
 func (service *BukuServiceImpl) FindById(ctx context.Context, bukuId string) web.BukuResponse {

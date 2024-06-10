@@ -46,12 +46,12 @@ func (service *AdminServiceImpl) Create(ctx context.Context, request web.AdminCr
 
 }
 
-func (service *AdminServiceImpl) Update(ctx context.Context, request web.AdminUpdateRequest) web.AdminResponse{
+func (service *AdminServiceImpl) Update(ctx context.Context, request web.AdminUpdateRequest, adminId int) web.AdminResponse{
 	tx,err := service.DB.Begin()
 	helper.PanicIfError(err)
 	defer helper.CommitOrRollback(tx)
 
-	admin, err := service.AdminRepository.FindById(ctx,tx,request.Id)
+	admin, err := service.AdminRepository.FindById(ctx,tx, adminId)
 	if err != nil{
 		panic(exception.NewNotFoundError(err.Error()))
 	}
@@ -65,12 +65,12 @@ func (service *AdminServiceImpl) Update(ctx context.Context, request web.AdminUp
 	return helper.ToAdminResponse(admin)
 }
 
-func (service *AdminServiceImpl) Delete(ctx context.Context, AdminId int) {
+func (service *AdminServiceImpl) Delete(ctx context.Context, adminId int) {
 	tx,err := service.DB.Begin()
 	helper.PanicIfError(err)
 	defer helper.CommitOrRollback(tx)
 
-	admin, err := service.AdminRepository.FindById(ctx,tx,AdminId)
+	admin, err := service.AdminRepository.FindById(ctx,tx, adminId)
 	if err != nil{
 		panic(exception.NewNotFoundError(err.Error()))
 	}
@@ -78,12 +78,12 @@ func (service *AdminServiceImpl) Delete(ctx context.Context, AdminId int) {
 	service.AdminRepository.Delete(ctx,tx, admin)
 }
 
-func (service *AdminServiceImpl) FindById(ctx context.Context, AdminId int) web.AdminResponse{
+func (service *AdminServiceImpl) FindById(ctx context.Context, adminId int) web.AdminResponse{
 	tx,err := service.DB.Begin()
 	helper.PanicIfError(err)
 	defer helper.CommitOrRollback(tx)
 
-	admin, err := service.AdminRepository.FindById(ctx,tx,AdminId)
+	admin, err := service.AdminRepository.FindById(ctx,tx, adminId)
 	if err != nil{ 
 		panic(exception.NewNotFoundError(err.Error()))
 	}
