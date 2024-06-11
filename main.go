@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
 	"toko-buku/app"
 	"toko-buku/controller"
@@ -14,7 +15,6 @@ import (
 )
 
 func main() {
-
 	validate := validator.New()
 	db := app.NewDB()
 	adminRepository := repository.NewAdminRepositry()
@@ -33,12 +33,21 @@ func main() {
 	aksesorisService := service.NewAksesorisService(aksesorisRepository,db,validate)
 	aksesorisController := controller.NewAksesorisController(aksesorisService)
 
-	router := app.NewRouter(adminController,memberController, bukuController,aksesorisController)
+	stockRepository := repository.NewStokRepository()
+	stockService := service.NewStockService(stockRepository,db,validate)
+	stockController := controller.NewStockController(stockService)
+
+	router := app.NewRouter(adminController,memberController, bukuController,aksesorisController,stockController)
+
 	server := http.Server{
 		Addr: "localhost:3000",
 		Handler: router,
 	}
+	address := "localhost:3000"
+	fmt.Printf("Server started at %s\n", address)
 
 	err := server.ListenAndServe()
 	helper.PanicIfError(err)
 }
+
+

@@ -33,50 +33,56 @@ func(service *MemberServiceImpl) Create(ctx context.Context, request web.MemberC
 	tx,err := service.DB.Begin()
 	helper.PanicIfError(err)
 	defer helper.CommitOrRollback(tx)
+	
 
 	member := domain.Member{
-		Id: request.Id,
 		Name: request.Name,
+		Email: request.Email,
+		Telepon: request.Telepon,
+		Alamat: request.Alamat,
 	}
 
 	member = service.MemberRepository.Save(ctx,tx,member)
 	return helper.ToMemberResponse(member)
 }
 
-func(service *MemberServiceImpl) Update(ctx context.Context, request web.MemberUpdateRequest) web.MemberResponse{
+func(service *MemberServiceImpl) Update(ctx context.Context, request web.MemberUpdateRequest, memberId int) web.MemberResponse{
 	tx,err := service.DB.Begin()
 	helper.PanicIfError(err)
 	defer helper.CommitOrRollback(tx)
 
-	member, err := service.MemberRepository.FindById(ctx,tx,request.Id)
+	member, err := service.MemberRepository.FindById(ctx,tx, memberId)
 	if err!= nil{
 		panic(exception.NewNotFoundError(err.Error()))
 	}
 
 	member.Name = request.Name
+	member.Email = request.Email
+	member.Telepon = request.Telepon
+	member.Alamat = request.Alamat
 
-	member = service.MemberRepository.Update(ctx,tx,member)
+	member = service.MemberRepository.Update(ctx, tx, member, memberId)
 	return helper.ToMemberResponse(member)
 }
 
-func (service *MemberServiceImpl) Delete(ctx context.Context, MemberId int){
+func (service *MemberServiceImpl) Delete(ctx context.Context, memberId int){
 	tx,err := service.DB.Begin()
 	helper.PanicIfError(err)
 	defer helper.CommitOrRollback(tx)
 
-	member, err := service.MemberRepository.FindById(ctx,tx,MemberId)
+	_, err = service.MemberRepository.FindById(ctx, tx, memberId)
 	if err != nil{
 		panic(exception.NewNotFoundError(err.Error()))
 	}
-	service.MemberRepository.Delete(ctx,tx,member)
+	service.MemberRepository.Delete(ctx, tx, memberId)
 }
 
-func(service *MemberServiceImpl) FindById(ctx context.Context, MemberId int)web.MemberResponse{
+func(service *MemberServiceImpl) FindById(ctx context.Context, memberId int)web.MemberResponse{
 	tx,err := service.DB.Begin()
 	helper.PanicIfError(err)
 	defer helper.CommitOrRollback(tx)
 
-	member, err := service.MemberRepository.FindById(ctx,tx,MemberId)
+	member, err := service.MemberRepository.FindById(ctx,tx, memberId)
 	if err!= nil{
 		panic(exception.NewNotFoundError(err.Error()))
 	}

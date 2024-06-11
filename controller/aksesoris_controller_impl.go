@@ -35,10 +35,10 @@ func(controller *AksesorisControllerImpl) Create(writer http.ResponseWriter, req
 func(controller *AksesorisControllerImpl) Update(writer http.ResponseWriter, request *http.Request, params httprouter.Params){
 	aksesorisUpdateRequest := web.AksesorisUpdateRequest{}
 	helper.ReadFromRequestBody(request, &aksesorisUpdateRequest)
-	aksesorisId := params.ByName("aksesorisId")
 
-	aksesorisUpdateRequest.Id = aksesorisId
-	aksesorisResponse := controller.AksesorisService.Update(request.Context(),aksesorisUpdateRequest)
+	id := params.ByName("aksesorisId")
+
+	aksesorisResponse := controller.AksesorisService.Update(request.Context(), aksesorisUpdateRequest, id)
 	webResponse := web.WebResponse{
 		Code: 200,
 		Status: "OK",
@@ -48,9 +48,9 @@ func(controller *AksesorisControllerImpl) Update(writer http.ResponseWriter, req
 }
 
 func(controller *AksesorisControllerImpl) Delete(writer http.ResponseWriter, request *http.Request, params httprouter.Params){
-	aksesorisId := params.ByName("aksesorisId")
+	id := params.ByName("aksesorisId")
 
-	controller.AksesorisService.Delete(request.Context(),aksesorisId)
+	controller.AksesorisService.Delete(request.Context(), id)
 	webResponse := web.WebResponse{
 		Code: 200,
 		Status: "OK",
@@ -59,9 +59,9 @@ func(controller *AksesorisControllerImpl) Delete(writer http.ResponseWriter, req
 }
 
 func(controller *AksesorisControllerImpl) FindById(writer http.ResponseWriter, request *http.Request,params httprouter.Params){
-	aksesorisId := params.ByName("aksesorisId")
+	id := params.ByName("aksesorisId")
 
-	aksesorisResponse := controller.AksesorisService.FindById(request.Context(), aksesorisId)
+	aksesorisResponse := controller.AksesorisService.FindById(request.Context(), id)
 	webResponse := web.WebResponse{
 		Code: 200,
 		Status: "OK",

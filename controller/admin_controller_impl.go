@@ -37,14 +37,12 @@ func (controller *AdminControllerImpl) Create(writer http.ResponseWriter, reques
 func (controller *AdminControllerImpl) Update(writer http.ResponseWriter, request *http.Request, params httprouter.Params) {
 	adminUpdateRequest := web.AdminUpdateRequest{}
 	helper.ReadFromRequestBody(request, &adminUpdateRequest)
-
+ 
 	adminId := params.ByName("adminId")
 	id, err := strconv.Atoi(adminId)
 	helper.PanicIfError(err)
 
-	adminUpdateRequest.Id = id
-
-	adminResponse := controller.AdminService.Update(request.Context(), adminUpdateRequest)
+	adminResponse := controller.AdminService.Update(request.Context(), adminUpdateRequest, id)
 	webResponse := web.WebResponse{
 		Code:   200,
 		Status: "OK",

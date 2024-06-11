@@ -42,9 +42,7 @@ func (controller *MemberControllerImpl) Update(writer http.ResponseWriter, reque
 	id, err := strconv.Atoi(memberId)
 	helper.PanicIfError(err)
 
-	memberUpdateRequest.Id = id
-
-	memberResponse := controller.MemberService.Update(request.Context(), memberUpdateRequest)
+	memberResponse := controller.MemberService.Update(request.Context(), memberUpdateRequest, id)
 	webResponse := web.WebResponse{
 		Code:   200,
 		Status: "OK",

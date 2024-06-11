@@ -38,47 +38,50 @@ func(service *AksesorisServiceImpl) Create(ctx context.Context, request web.Akse
 		Id: request.Id,
 		Name: request.Name,
 		Harga: request.Harga,
+		Stok: request.Stok,
 	}
 
 	aksesoris = service.AksesorisRepository.Save(ctx,tx,aksesoris)
 	return helper.ToAksesorisResponse(aksesoris)
 }
 
-func(service *AksesorisServiceImpl) Update(ctx context.Context, request web.AksesorisUpdateRequest) web.AksesorisResponse{
+func(service *AksesorisServiceImpl) Update(ctx context.Context, request web.AksesorisUpdateRequest, aksesorisId string) web.AksesorisResponse{
 	tx,err := service.DB.Begin()
 	helper.PanicIfError(err)
 	defer helper.CommitOrRollback(tx)
 
-	aksesoris, err := service.AksesorisRepository.FindById(ctx,tx,request.Id)
+	aksesoris, err := service.AksesorisRepository.FindById(ctx,tx, aksesorisId)
 	if err!=nil{
 		panic(exception.NewNotFoundError(err.Error()))
 	}
 
 	aksesoris.Name = request.Name
 	aksesoris.Harga = request.Harga
+	aksesoris.Stok = request.Stok
 
-	aksesoris = service.AksesorisRepository.Update(ctx,tx,aksesoris)
+
+	aksesoris = service.AksesorisRepository.Update(ctx,tx, aksesoris, aksesorisId)
 	return helper.ToAksesorisResponse(aksesoris)
 }
 
-func(service *AksesorisServiceImpl) Delete(ctx context.Context, AksesorisId string){
+func(service *AksesorisServiceImpl) Delete(ctx context.Context, aksesorisId string){
 	tx, err := service.DB.Begin()
 	helper.PanicIfError(err)
 	defer helper.CommitOrRollback(tx)
 
-	aksesoris, err := service.AksesorisRepository.FindById(ctx,tx,AksesorisId)
+	_, err = service.AksesorisRepository.FindById(ctx,tx, aksesorisId)
 	if err!=nil{
 		panic(exception.NewNotFoundError(err.Error()))
 	}
-	service.AksesorisRepository.Delete(ctx,tx,aksesoris)
+	service.AksesorisRepository.Delete(ctx,tx, aksesorisId)
 }
 
-func(service *AksesorisServiceImpl) FindById(ctx context.Context, AksesorisId string)web.AksesorisResponse{
+func(service *AksesorisServiceImpl) FindById(ctx context.Context, aksesorisId string)web.AksesorisResponse{
 	tx,err := service.DB.Begin()
 	helper.PanicIfError(err)
 	defer helper.CommitOrRollback(tx)
 
-	aksesoris,err := service.AksesorisRepository.FindById(ctx,tx,AksesorisId)
+	aksesoris,err := service.AksesorisRepository.FindById(ctx,tx,aksesorisId)
 	if err!=nil{
 		panic(exception.NewNotFoundError(err.Error()))
 	}

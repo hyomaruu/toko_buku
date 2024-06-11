@@ -2,12 +2,12 @@ package web
 
 
 type BukuCreateRequest struct {
-	Id        string    `validate:"required" json:"kode_buku"`
-	Name      string    `validate:"required" json:"nama_buku"`
-	Penerbit  string    `validate:"required" json:"penerbit"`
-	Image     string    `json:"gambar"`
-	Pengarang string    `validate:"required" json:"pengarang"`
-	Genre     string    `validate:"required" json:"genre"`
-	Rilis     string `validate:"required" json:"rilis"`
-	Harga     int       `validate:"required" json:"harga"`
+	Id        string    `validate:"required" form:"kode_buku"`
+	Name      string    `validate:"required" form:"nama_buku"`
+	Penerbit  string    `validate:"required" form:"penerbit"`
+	Image     string    `form:"gambar"`
+	Pengarang string    `validate:"required" form:"pengarang"`
+	Genre     string    `validate:"required" form:"genre"`
+	Rilis     string `validate:"required" form:"rilis"`
+	Harga     int       `validate:"required" form:"harga"`
 }
