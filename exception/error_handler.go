@@ -31,9 +31,8 @@ func validationErrors(writer http.ResponseWriter, request *http.Request, err int
 		webResponse := web.WebResponse{
 			Code:   http.StatusBadRequest,
 			Status: "BAD REQUEST",
-			Data:   exception.Error(),
-			
-		
+			Message:   exception.Error(),
+			Data:   nil,
 		}
 		helper.WriteToResponseBody(writer, webResponse)
 		return true
@@ -51,7 +50,9 @@ func notFoundError(writer http.ResponseWriter, request *http.Request, err interf
 		webResponse := web.WebResponse{
 			Code:   http.StatusNotFound,
 			Status: "NOT FOUND",
-			Data:   exception.Error,
+			Message:   exception.Error,
+			Data:   nil,
+
 			
 		
 		}
@@ -64,14 +65,14 @@ func notFoundError(writer http.ResponseWriter, request *http.Request, err interf
 }
 
 func internalServerError(writer http.ResponseWriter, request *http.Request, err interface{}) {
-
 	writer.Header().Set("Content-Type", "Application/json")
 	writer.WriteHeader(http.StatusInternalServerError)
 
 	webResponse := web.WebResponse{
 		Code:   http.StatusInternalServerError,
 		Status: "INTERNAL SERVER ERROR",
-		Data:   err,
+		Message: "Internal server error, please check your host.",
+		Data:   nil,
 	}
 
 	helper.WriteToResponseBody(writer, webResponse)

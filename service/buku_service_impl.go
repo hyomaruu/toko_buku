@@ -17,7 +17,6 @@ type BukuServiceImpl struct {
 	BukuRepository repository.BukuRepository
 	DB             *sql.DB
 	Validate       *validator.Validate
-
 }
 
 func NewBukuService(bukuRepository repository.BukuRepository, DB *sql.DB, validate *validator.Validate) BukuService {
@@ -36,7 +35,7 @@ func (service *BukuServiceImpl) Create(ctx context.Context, request web.BukuCrea
 	helper.PanicIfError(err)
 	defer helper.CommitOrRollback(tx)
 
-	Rilis,_ := time.Parse("2006-01-02", request.Rilis)
+	Rilis, _ := time.Parse("2006-01-02", request.Rilis)
 
 	buku := domain.Buku{
 		Id:        request.Id,
@@ -47,8 +46,9 @@ func (service *BukuServiceImpl) Create(ctx context.Context, request web.BukuCrea
 		Genre:     request.Genre,
 		Rilis:     Rilis,
 		Harga:     request.Harga,
+		Deskripsi: request.Deskripsi,
 	}
-	
+
 	buku = service.BukuRepository.Save(ctx, tx, buku)
 	return helper.ToBukuResponse(buku)
 }
@@ -57,13 +57,12 @@ func (service *BukuServiceImpl) Update(ctx context.Context, request web.BukuUpda
 	tx, err := service.DB.Begin()
 	helper.PanicIfError(err)
 	defer helper.CommitOrRollback(tx)
-	Rilis,_ := time.Parse("2006-01-02", request.Rilis)
+	Rilis, _ := time.Parse("2006-01-02", request.Rilis)
 
 	buku, err := service.BukuRepository.FindById(ctx, tx, bukuId)
 	if err != nil {
 		panic(exception.NewNotFoundError(err.Error()))
 	}
-	
 
 	buku.Name = request.Name
 	buku.Penerbit = request.Penerbit
@@ -72,10 +71,29 @@ func (service *BukuServiceImpl) Update(ctx context.Context, request web.BukuUpda
 	buku.Genre = request.Genre
 	buku.Rilis = Rilis
 	buku.Harga = request.Harga
+	buku.Deskripsi = request.Deskripsi
+
 
 	buku = service.BukuRepository.Update(ctx, tx, buku, bukuId)
 	return helper.ToBukuResponse(buku)
 }
+
+func (service *BukuServiceImpl) UpdateStok(ctx context.Context, request web.BukuUpdateStockRequest, bukuId string) web.BukuResponse {
+	tx, err := service.DB.Begin()
+	helper.PanicIfError(err)
+	defer helper.CommitOrRollback(tx)
+
+	buku, err := service.BukuRepository.FindById(ctx, tx, bukuId)
+	if err != nil {
+		panic(exception.NewNotFoundError(err.Error()))
+	}
+
+	buku.Stok = request.Stok
+
+	buku = service.BukuRepository.UpdateStok(ctx, tx, buku, bukuId)
+	return helper.ToBukuResponse(buku)
+}
+
 
 func (service *BukuServiceImpl) Delete(ctx context.Context, bukuId string) {
 	tx, err := service.DB.Begin()

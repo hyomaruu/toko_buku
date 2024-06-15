@@ -1,9 +1,8 @@
 {
 	"info": {
-		"_postman_id": "8a1a82ea-9588-4687-b328-bef4844c44ed",
+		"_postman_id": "86de52b9-8175-442b-b280-3e5a9bff9b26",
 		"name": "Toko Buku",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "5689777"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
@@ -737,6 +736,134 @@
 							"path": [
 								"aksesoris",
 								"CODE123"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Stock",
+			"item": [
+				{
+					"name": "Get Stocks",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"stock\" : 13\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/stock/ayamsayur",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"stock",
+								"ayamsayur"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Stock",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/stock/ayamsayur",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"stock",
+								"ayamsayur"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Stock",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\" : \"BUKUZZZZ\",\r\n    \"stock\": 12\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/stock",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"stock"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Stock",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"stock\" : 32\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/stock/ayamsayur",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"stock",
+								"ayamsayur"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "New Request",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{baseUrl}}/stock/BUKU1234",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"stock",
+								"BUKU1234"
 							]
 						}
 					},

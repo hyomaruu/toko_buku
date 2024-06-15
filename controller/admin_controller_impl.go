@@ -29,6 +29,7 @@ func (controller *AdminControllerImpl) Create(writer http.ResponseWriter, reques
 		Code:   200,
 		Status: "OK",
 		Data:   adminResponse,
+		Message: "Admin successfully created",
 	}
 
 	helper.WriteToResponseBody(writer, webResponse)
@@ -47,6 +48,7 @@ func (controller *AdminControllerImpl) Update(writer http.ResponseWriter, reques
 		Code:   200,
 		Status: "OK",
 		Data:   adminResponse,
+		Message: "Admin successfully updated",
 	}
 
 	helper.WriteToResponseBody(writer, webResponse)
@@ -61,6 +63,7 @@ func (controller *AdminControllerImpl) Delete(writer http.ResponseWriter, reques
 	webResponse := web.WebResponse{
 		Code:   200,
 		Status: "OK",
+		Message: "Admin successfully deleted",
 	}
 
 	helper.WriteToResponseBody(writer, webResponse)
@@ -76,6 +79,7 @@ func (controller *AdminControllerImpl) FindById(writer http.ResponseWriter, requ
 		Code:   200,
 		Status: "OK",
 		Data:   adminResponse,
+		Message: "Successfully fetch data",
 	}
 
 	helper.WriteToResponseBody(writer, webResponse)
@@ -87,6 +91,7 @@ func (controller *AdminControllerImpl) FindAll(writer http.ResponseWriter, reque
 		Code:   200,
 		Status: "OK",
 		Data:   adminResponses,
+		Message: "Successfully fetch data",
 	}
 
 	helper.WriteToResponseBody(writer, webResponse)

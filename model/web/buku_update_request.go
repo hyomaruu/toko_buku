@@ -2,11 +2,12 @@ package web
 
 
 type BukuUpdateRequest struct {
-	Name      string    `validate:"required" json:"nama_buku"`
-	Penerbit  string    `validate:"required" json:"penerbit"`
-	Image     string    `json:"gambar"`
-	Pengarang string    `validate:"required" json:"pengarang"`
-	Genre     string    `validate:"required" json:"genre"`
-	Rilis     string `validate:"required" json:"rilis"`
-	Harga     int       `validate:"required" json:"harga"`
+	Name      string    `validate:"required" form:"nama_buku"`
+	Penerbit  string    `validate:"required" form:"penerbit"`
+	Image     string    	`form:"gambar"`
+	Pengarang string    `validate:"required" form:"pengarang"`
+	Genre     string    `validate:"required" form:"genre"`
+	Rilis     string 	`validate:"required" form:"rilis"`
+	Deskripsi     string 	`validate:"required" form:"deskripsi"`
+	Harga     int       `validate:"required" form:"harga"`
 }

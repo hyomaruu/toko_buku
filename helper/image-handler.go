@@ -9,7 +9,7 @@ import (
 	"fmt"
 )
 
-func HandleUploadImage(request *http.Request, field string) string{
+func HandleUploadImage(request *http.Request, path string, field string) string{
 
 	file, _, err := request.FormFile(field)
 
@@ -22,7 +22,7 @@ func HandleUploadImage(request *http.Request, field string) string{
     // fmt.Printf("File Size: %+v\n", handler.Size)
     // fmt.Printf("MIME Header: %+v\n", handler.Header)
 
-	tempFile, err := os.CreateTemp("uploaded-images", "upload-*.png")
+	tempFile, err := os.CreateTemp(path, "upload-*.png")
     if err != nil {
         fmt.Println(err)
     }

@@ -1,0 +1,41 @@
+API CHECK
+
+
+Admin Api Module
+
+- [x] Get Admins
+- [x] Get Admin
+- [x] Add Admin
+- [x] Update Admin
+- [x] Delete Admin
+
+
+Aksesoris Api Module
+
+- [x] Get Aksesoris
+- [x] Get Aksesoris By Kode
+- [x] Add Aksesoris
+- [x] Update Aksesoris
+- [x] Update Aksesoris Stok
+- [x] Delete Aksesoris
+
+
+Member Api Module
+
+- [x] Get Members
+- [x] Get Member
+- [x] Add Member
+- [x] Update Member
+- [x] Delete Member
+
+
+Buku Api Module
+
+- [x] Get Buku
+- [x] Get Buku By Kode
+- [x] Add Buku
+- [x] Update Buku
+- [x] Update Buku Stok
+- [x] Delete Buku
+
+

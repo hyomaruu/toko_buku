@@ -38,7 +38,9 @@ func(service *AksesorisServiceImpl) Create(ctx context.Context, request web.Akse
 		Id: request.Id,
 		Name: request.Name,
 		Harga: request.Harga,
-		Stok: request.Stok,
+		Image: request.Image,
+		Deskripsi: request.Deskripsi,
+		Stok: 0,
 	}
 
 	aksesoris = service.AksesorisRepository.Save(ctx,tx,aksesoris)
@@ -57,10 +59,26 @@ func(service *AksesorisServiceImpl) Update(ctx context.Context, request web.Akse
 
 	aksesoris.Name = request.Name
 	aksesoris.Harga = request.Harga
-	aksesoris.Stok = request.Stok
-
+	aksesoris.Image = request.Image
+	aksesoris.Deskripsi = request.Deskripsi
 
 	aksesoris = service.AksesorisRepository.Update(ctx,tx, aksesoris, aksesorisId)
+	return helper.ToAksesorisResponse(aksesoris)
+}
+
+func(service *AksesorisServiceImpl) UpdateStok(ctx context.Context, request web.AksesorisUpdateStockRequest, aksesorisId string) web.AksesorisResponse{
+	tx,err := service.DB.Begin()
+	helper.PanicIfError(err)
+	defer helper.CommitOrRollback(tx)
+
+	aksesoris, err := service.AksesorisRepository.FindById(ctx,tx, aksesorisId)
+	if err!=nil{
+		panic(exception.NewNotFoundError(err.Error()))
+	}
+
+	aksesoris.Stok = request.Stok
+
+	aksesoris = service.AksesorisRepository.UpdateStok(ctx,tx, aksesoris, aksesorisId)
 	return helper.ToAksesorisResponse(aksesoris)
 }
 

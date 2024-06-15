@@ -1,8 +1,9 @@
 package web
 
 type AksesorisCreateRequest struct {
-	Id    string `validate:"required" json:"kode"`
-	Name  string `validate:"required" json:"nama_barang"`
-	Harga int    `validate:"required" json:"harga"`
-	Stok int    `validate:"required" json:"stok"`
+	Id    		string 	`validate:"required" form:"kode"`
+	Name  		string 	`validate:"required" form:"nama_barang"`
+	Image 		string  `form:"gambar"`
+	Deskripsi 	string  `validate:"required" form:"deskripsi"`
+	Harga 		int    	`validate:"required" form:"harga"`
 }

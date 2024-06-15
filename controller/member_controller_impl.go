@@ -29,6 +29,7 @@ func (controller *MemberControllerImpl) Create(writer http.ResponseWriter, reque
 		Code:   200,
 		Status: "OK",
 		Data:   memberResponse,
+		Message: "Member successfully created",
 	}
 
 	helper.WriteToResponseBody(writer, webResponse)
@@ -47,6 +48,7 @@ func (controller *MemberControllerImpl) Update(writer http.ResponseWriter, reque
 		Code:   200,
 		Status: "OK",
 		Data:   memberResponse,
+		Message: "Member successfully updated",
 	}
 
 	helper.WriteToResponseBody(writer, webResponse)
@@ -61,6 +63,7 @@ func (controller *MemberControllerImpl) Delete(writer http.ResponseWriter, reque
 	webResponse := web.WebResponse{
 		Code:   200,
 		Status: "OK",
+		Message: "Member successfully deleted",
 	}
 
 	helper.WriteToResponseBody(writer, webResponse)
@@ -76,6 +79,7 @@ func (controller *MemberControllerImpl) FindById(writer http.ResponseWriter, req
 		Code:   200,
 		Status: "OK",
 		Data:   memberResponse,
+		Message: "Successfully fetch data",
 	}
 
 	helper.WriteToResponseBody(writer, webResponse)
@@ -87,6 +91,7 @@ func (controller *MemberControllerImpl) FindAll(writer http.ResponseWriter, requ
 		Code:   200,
 		Status: "OK",
 		Data:   memberResponses,
+		Message: "Successfully fetch data",
 	}
 
 	helper.WriteToResponseBody(writer, webResponse)

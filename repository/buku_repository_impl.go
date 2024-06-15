@@ -16,17 +16,25 @@ func NewBukuRepository() BukuRepository {
 }
 
 func (repository *BukuRepositoryImpl) Save(ctx context.Context, tx *sql.Tx, buku domain.Buku) domain.Buku {
-	SQL := "insert into data_buku(kode_buku,nama_buku,penerbit,gambar,pengarang,genre,rilis,harga) values (?,?,?,?,?,?,?,?)"
+	SQL := "insert into data_buku(kode_buku,nama_buku,penerbit,gambar,deskripsi,pengarang,genre,rilis,harga) values (?,?,?,?,?,?,?,?,?)"
 
-	_, err := tx.ExecContext(ctx, SQL, buku.Id, buku.Name, buku.Penerbit, buku.Image, buku.Pengarang, buku.Genre, buku.Rilis, buku.Harga)
+	_, err := tx.ExecContext(ctx, SQL, buku.Id, buku.Name, buku.Penerbit, buku.Image, buku.Deskripsi, buku.Pengarang, buku.Genre, buku.Rilis, buku.Harga)
 	helper.PanicIfError(err)
 
 	return buku
 }
 
 func (repository *BukuRepositoryImpl) Update(ctx context.Context, tx *sql.Tx, buku domain.Buku, bukuId string) domain.Buku {
-	SQL := "update data_buku set nama_buku = ?,penerbit = ?,gambar = ?,pengarang = ?,genre =?,rilis = ?,harga = ? where kode_buku = ?"
-	_, err := tx.ExecContext(ctx, SQL, buku.Name, buku.Penerbit, buku.Image, buku.Pengarang, buku.Genre, buku.Rilis, buku.Harga, bukuId)
+	SQL := "update data_buku set nama_buku = ?,penerbit = ?,gambar = ?,pengarang = ?, deskripsi = ?,genre =?,rilis = ?,harga = ? where kode_buku = ?"
+	_, err := tx.ExecContext(ctx, SQL, buku.Name, buku.Penerbit, buku.Image, buku.Pengarang, buku.Deskripsi, buku.Genre, buku.Rilis, buku.Harga, bukuId)
+	helper.PanicIfError(err)
+
+	return buku
+}
+
+func (repository *BukuRepositoryImpl) UpdateStok(ctx context.Context, tx *sql.Tx, buku domain.Buku, bukuId string) domain.Buku {
+	SQL := "update data_buku set stok = ? where kode_buku = ?"
+	_, err := tx.ExecContext(ctx, SQL, buku.Stok, bukuId)
 	helper.PanicIfError(err)
 
 	return buku
@@ -40,14 +48,14 @@ func (repository *BukuRepositoryImpl) Delete(ctx context.Context, tx *sql.Tx, bu
 }
 
 func (repository *BukuRepositoryImpl) FindById(ctx context.Context, tx *sql.Tx, bukuId string) (domain.Buku, error) {
-	SQL := "select kode_buku ,nama_buku ,penerbit ,gambar ,pengarang ,genre, rilis ,harga from data_buku where kode_buku = ?"
+	SQL := "select kode_buku ,nama_buku ,penerbit ,gambar, deskripsi ,pengarang ,genre, rilis ,harga, stok from data_buku where kode_buku = ?"
 	rows, err := tx.QueryContext(ctx, SQL, bukuId)
 	helper.PanicIfError(err)
 	defer rows.Close()
 
 	buku := domain.Buku{}
 	if rows.Next() {
-		err := rows.Scan(&buku.Id, &buku.Name, &buku.Penerbit, &buku.Image, &buku.Pengarang, &buku.Genre,&buku.Rilis, &buku.Harga)
+		err := rows.Scan(&buku.Id, &buku.Name, &buku.Penerbit, &buku.Image, &buku.Deskripsi, &buku.Pengarang, &buku.Genre,&buku.Rilis, &buku.Harga,  &buku.Stok)
 		helper.PanicIfError(err)
 		return buku, nil
 	} else {
@@ -56,7 +64,7 @@ func (repository *BukuRepositoryImpl) FindById(ctx context.Context, tx *sql.Tx, 
 }
 
 func (repository *BukuRepositoryImpl) FindAll(ctx context.Context, tx *sql.Tx) []domain.Buku {
-	SQL := "select kode_buku, nama_buku, penerbit, gambar, pengarang, genre, rilis, harga from data_buku"
+	SQL := "select kode_buku, nama_buku, penerbit, gambar,deskripsi, pengarang, genre, rilis, harga, stok from data_buku"
 	rows, err := tx.QueryContext(ctx, SQL)
 	helper.PanicIfError(err)
 	defer rows.Close()
@@ -66,7 +74,7 @@ func (repository *BukuRepositoryImpl) FindAll(ctx context.Context, tx *sql.Tx) [
 	var bukus []domain.Buku
 	for rows.Next() {
 		buku := domain.Buku{}
-		err := rows.Scan(&buku.Id, &buku.Name, &buku.Penerbit, &buku.Image, &buku.Pengarang, &buku.Genre,&buku.Rilis, &buku.Harga)
+		err := rows.Scan(&buku.Id, &buku.Name, &buku.Penerbit, &buku.Image, &buku.Deskripsi, &buku.Pengarang, &buku.Genre,&buku.Rilis, &buku.Harga, &buku.Stok)
 		helper.PanicIfError(err)
 		bukus = append(bukus, buku)
 	}

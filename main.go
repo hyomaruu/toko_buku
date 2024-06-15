@@ -1,7 +1,9 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
+	"os"
 	"toko-buku/app"
 	"toko-buku/controller"
 	"toko-buku/helper"
@@ -11,9 +13,15 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 
 	"github.com/go-playground/validator/v10"
+	"github.com/joho/godotenv"
 )
 
 func main() {
+	envErr := godotenv.Load()
+	helper.PanicIfError(envErr)
+
+	host := os.Getenv("HOST")
+
 	validate := validator.New()
 	db := app.NewDB()
 	adminRepository := repository.NewAdminRepositry()
@@ -35,9 +43,10 @@ func main() {
 	router := app.NewRouter(adminController,memberController, bukuController,aksesorisController)
 
 	server := http.Server{
-		Addr: "localhost:3000",
+		Addr: host,
 		Handler: router,
 	}
+	fmt.Printf("Server started at %s\n", server.Addr)
 
 	err := server.ListenAndServe()
 	helper.PanicIfError(err)

@@ -1,8 +1,11 @@
 package domain
 
 type Aksesoris struct{
-	Id string
-	Name string
-	Harga int
-	Stok int
+	Id 			string
+	Name 		string
+	Image 		string
+	Harga 		int
+	Deskripsi 	string
+	Stok 		int
+
 }
