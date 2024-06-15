@@ -40,7 +40,11 @@ func main() {
 	aksesorisService := service.NewAksesorisService(aksesorisRepository,db,validate)
 	aksesorisController := controller.NewAksesorisController(aksesorisService)
 
-	router := app.NewRouter(adminController,memberController, bukuController,aksesorisController)
+	keranjangRepository := repository.NewKeranjangRepository()
+	keranjangService := service.NewKeranjangService(keranjangRepository,db,validate)
+	keranjangController := controller.NewKeranjangController(keranjangService)
+
+	router := app.NewRouter(adminController,memberController, bukuController,aksesorisController, keranjangController)
 
 	server := http.Server{
 		Addr: host,

@@ -1,6 +1,5 @@
 API CHECK
 
-
 Admin Api Module
 
 - [x] Get Admins
@@ -38,4 +37,12 @@ Buku Api Module
 - [x] Update Buku Stok
 - [x] Delete Buku
 
+
+Keranjang Api Module
+
+- [x] Get Keranjang
+- [x] Get Keranjang By Kode
+- [x] Add Keranjang
+- [x] Update Keranjang Total
+- [x] Delete Keranjang
 

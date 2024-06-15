@@ -84,3 +84,24 @@ func ToAksesorisResponses(aksesoriss []domain.Aksesoris) []web.AksesorisResponse
 	}
 	return aksesorisResponses
 }
+
+func ToKeranjangResponse(keranjang domain.Keranjang) web.KeranjangResponse {
+	return web.KeranjangResponse{
+		KodeKeranjang 	: keranjang.KodeKeranjang, 
+		KodeTransaksi 	: keranjang.KodeTransaksi, 
+		TipeBarang 		: keranjang.TipeBarang, 
+		KodeBarang     	: keranjang.KodeBarang, 
+		TotalBarang     : keranjang.TotalBarang, 
+		Harga     		: keranjang.Harga, 
+		Data     		: keranjang.Data, 
+	}
+}
+
+func ToKeranjangResponses(keranjangs []domain.Keranjang) []web.KeranjangResponse {
+	var keranjangResponses []web.KeranjangResponse
+	for _, keranjang := range keranjangs {
+		keranjangResponses = append(keranjangResponses, ToKeranjangResponse(keranjang))
+	}
+	return keranjangResponses
+}
+
