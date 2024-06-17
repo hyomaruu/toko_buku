@@ -4,8 +4,6 @@ import (
 	"context"
 	"database/sql"
 	"errors"
-	"fmt"
-	"strconv"
 	"toko-buku/helper"
 	"toko-buku/model/domain"
 )
@@ -40,12 +38,8 @@ func (repository *KeranjangRepositoryImpl) UpdateTotalBarang(ctx context.Context
 
 func (repository *KeranjangRepositoryImpl) UpdateKodeTransaksi(ctx context.Context, tx *sql.Tx, keranjangId int, kodeTransaksi int) domain.Keranjang {
 	SQL := "update keranjang set kode_transaksi = ? where kode_keranjang = ?"
-
-	fmt.Printf(strconv.Itoa(kodeTransaksi), keranjangId)
-	val, err := tx.ExecContext(ctx, SQL, kodeTransaksi, keranjangId)
+	_, err := tx.ExecContext(ctx, SQL, kodeTransaksi, keranjangId)
 	helper.PanicIfError(err)
-
-	fmt.Printf("val: %v\n", val)
 
 	keranjang := domain.Keranjang{}
 
