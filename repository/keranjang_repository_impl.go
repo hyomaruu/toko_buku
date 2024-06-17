@@ -4,6 +4,8 @@ import (
 	"context"
 	"database/sql"
 	"errors"
+	"fmt"
+	"strconv"
 	"toko-buku/helper"
 	"toko-buku/model/domain"
 )
@@ -32,6 +34,20 @@ func (repository *KeranjangRepositoryImpl) UpdateTotalBarang(ctx context.Context
 	SQL := "update keranjang set total_barang = ? where kode_keranjang = ?"
 	_, err := tx.ExecContext(ctx, SQL, keranjang.TotalBarang, keranjangId)
 	helper.PanicIfError(err)
+
+	return keranjang
+}
+
+func (repository *KeranjangRepositoryImpl) UpdateKodeTransaksi(ctx context.Context, tx *sql.Tx, keranjangId int, kodeTransaksi int) domain.Keranjang {
+	SQL := "update keranjang set kode_transaksi = ? where kode_keranjang = ?"
+
+	fmt.Printf(strconv.Itoa(kodeTransaksi), keranjangId)
+	val, err := tx.ExecContext(ctx, SQL, kodeTransaksi, keranjangId)
+	helper.PanicIfError(err)
+
+	fmt.Printf("val: %v\n", val)
+
+	keranjang := domain.Keranjang{}
 
 	return keranjang
 }
@@ -74,19 +90,18 @@ func (repository *KeranjangRepositoryImpl) FindAll(ctx context.Context, tx *sql.
 	return keranjangs
 }
 
+func (repository *KeranjangRepositoryImpl) FindByKodeTransaksi(ctx context.Context, tx *sql.Tx, kodeTransaksi int) []domain.Keranjang {
+	SQL := "select kode_keranjang, tipe_barang, kode_barang, total_barang, harga from keranjang where kode_transaksi = ?"
+	rows, err := tx.QueryContext(ctx, SQL, kodeTransaksi)
+	helper.PanicIfError(err)
+	defer rows.Close()
 
-// SELECT kode_keranjang, tipe_barang, kode_barang, total_barang, t_keranjang.harga, 
-// 	CASE WHEN tipe_barang = 'BUKU' THEN t_buku.nama_buku ELSE null END AS nama,
-//     CASE WHEN tipe_barang = 'AKSESORIS' THEN t_aksesoris.nama_barang ELSE null END AS nama
-// 	FROM keranjang AS t_keranjang 
-// 	LEFT JOIN data_buku t_buku ON t_keranjang.kode_barang = t_buku.kode_buku AND t_keranjang.tipe_barang = 'BUKU'
-// 	LEFT JOIN aksesoris t_aksesoris ON t_keranjang.kode_barang = t_aksesoris.kode AND t_keranjang.tipe_barang = 'AKSESORIS'
-
-	
-
-// 	SELECT kode_keranjang, tipe_barang, kode_barang, total_barang, t_keranjang.harga, 
-// 	CASE WHEN tipe_barang = 'BUKU' THEN t_buku.nama_buku ELSE null ,
-//     WHEN tipe_barang = 'AKSESORIS' THEN t_aksesoris.nama_barang ELSE null END AS nama
-// 	FROM keranjang AS t_keranjang 
-// 	LEFT JOIN data_buku t_buku ON t_keranjang.kode_barang = t_buku.kode_buku AND t_keranjang.tipe_barang = 'BUKU'
-// 	LEFT JOIN aksesoris t_aksesoris ON t_keranjang.kode_barang = t_aksesoris.kode AND t_keranjang.tipe_barang = 'AKSESORIS'
+	var keranjangs []domain.Keranjang
+	for rows.Next() {
+		keranjang := domain.Keranjang{}
+		err := rows.Scan(&keranjang.KodeKeranjang, &keranjang.TipeBarang, &keranjang.KodeBarang, &keranjang.TotalBarang,  &keranjang.Harga)
+		helper.PanicIfError(err)
+		keranjangs = append(keranjangs, keranjang)
+	}
+	return keranjangs
+}

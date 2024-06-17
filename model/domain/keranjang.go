@@ -8,5 +8,5 @@ type Keranjang struct {
 	namaBarang    	string
 	TotalBarang 	int
 	Harga     		int
-	Data			interface{}
+	Barang			interface{}
 }

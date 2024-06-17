@@ -14,8 +14,6 @@ import (
 
 type KeranjangServiceImpl struct {
 	KeranjangRepository repository.KeranjangRepository
-	bukuRepository repository.BukuRepository
-	aksesorisRepository repository.AksesorisRepsitory
 	DB             *sql.DB
 	Validate       *validator.Validate
 }
@@ -23,8 +21,6 @@ type KeranjangServiceImpl struct {
 func NewKeranjangService(keranjangRepository repository.KeranjangRepository, DB *sql.DB, validate *validator.Validate) KeranjangService {
 	return &KeranjangServiceImpl{
 		KeranjangRepository: keranjangRepository,
-		bukuRepository: repository.NewBukuRepository(),
-		aksesorisRepository: repository.NewAksesorisRepository(),
 		DB:             DB,
 		Validate:       validate,
 	}
@@ -46,28 +42,8 @@ func (service *KeranjangServiceImpl) Create(ctx context.Context, request web.Ker
 	}
 
 	keranjang = service.KeranjangRepository.Create(ctx, tx, keranjang)
-
-	if (keranjang.TipeBarang == "AKSESORIS") {
-		aksesoris, errAksesoris := service.aksesorisRepository.FindById(ctx, tx, keranjang.KodeBarang)
-		if errAksesoris != nil {
-			panic(exception.NewNotFoundError(err.Error()))
-		}
-
-		keranjang.Data = helper.ToAksesorisResponse(aksesoris)
-	}
-
-	if (keranjang.TipeBarang == "BUKU") {
-		buku, errBuku := service.bukuRepository.FindById(ctx, tx, keranjang.KodeBarang)
-		if errBuku != nil {
-			panic(exception.NewNotFoundError(err.Error()))
-		}
-
-		keranjang.Data = helper.ToBukuResponse(buku)
-	}
-
 	return helper.ToKeranjangResponse(keranjang)
 }
-
 
 func (service *KeranjangServiceImpl) UpdateTotalBarang(ctx context.Context, request web.KeranjangUpdateStockRequest, keranjangId int) web.KeranjangResponse {
 	tx, err := service.DB.Begin()
@@ -80,27 +56,23 @@ func (service *KeranjangServiceImpl) UpdateTotalBarang(ctx context.Context, requ
 	}
 
 	keranjang.TotalBarang = request.TotalBarang
-
 	keranjang = service.KeranjangRepository.UpdateTotalBarang(ctx, tx, keranjang, keranjangId)
 
-	if (keranjang.TipeBarang == "AKSESORIS") {
-		aksesoris, errAksesoris := service.aksesorisRepository.FindById(ctx, tx, keranjang.KodeBarang)
-		if errAksesoris != nil {
-			panic(exception.NewNotFoundError(err.Error()))
-		}
+	return helper.ToKeranjangResponse(keranjang)
+}
 
-		keranjang.Data = helper.ToAksesorisResponse(aksesoris)
+func (service *KeranjangServiceImpl) UpdateKodeTransaksi(ctx context.Context, keranjangId int, kodeTransaksi int) web.KeranjangResponse {
+	tx, err := service.DB.Begin()
+	helper.PanicIfError(err)
+	defer helper.CommitOrRollback(tx)
+
+	keranjang, err := service.KeranjangRepository.FindById(ctx, tx, keranjangId)
+	if err != nil {
+		panic(exception.NewNotFoundError(err.Error()))
 	}
 
-	if (keranjang.TipeBarang == "BUKU") {
-		buku, errBuku := service.bukuRepository.FindById(ctx, tx, keranjang.KodeBarang)
-		if errBuku != nil {
-			panic(exception.NewNotFoundError(err.Error()))
-		}
+	keranjang = service.KeranjangRepository.UpdateKodeTransaksi(ctx, tx, keranjangId, kodeTransaksi)
 
-		keranjang.Data = helper.ToBukuResponse(buku)
-	}
-	
 	return helper.ToKeranjangResponse(keranjang)
 }
 
@@ -126,27 +98,6 @@ func (service *KeranjangServiceImpl) FindById(ctx context.Context, keranjangId i
 	if err != nil {
 		panic(exception.NewNotFoundError(err.Error()))
 	}
-
-	if (keranjang.TipeBarang == "AKSESORIS") {
-		aksesoris, errAksesoris := service.aksesorisRepository.FindById(ctx, tx, keranjang.KodeBarang)
-		if errAksesoris != nil {
-			panic(exception.NewNotFoundError(err.Error()))
-		}
-
-		keranjang.Data = helper.ToAksesorisResponse(aksesoris)
-
-	}
-
-	if (keranjang.TipeBarang == "BUKU") {
-		buku, errBuku := service.bukuRepository.FindById(ctx, tx, keranjang.KodeBarang)
-		if errBuku != nil {
-			panic(exception.NewNotFoundError(err.Error()))
-		}
-
-		keranjang.Data = helper.ToBukuResponse(buku)
-
-	}
-
 	return helper.ToKeranjangResponse(keranjang)
 }
 
@@ -156,26 +107,14 @@ func (service *KeranjangServiceImpl) FindAll(ctx context.Context) []web.Keranjan
 	defer helper.CommitOrRollback(tx)
 
 	keranjangs := service.KeranjangRepository.FindAll(ctx, tx)
+	return helper.ToKeranjangResponses(keranjangs)
+}
 
-	for i, keranjang := range keranjangs {
-		if (keranjang.TipeBarang == "AKSESORIS") {
-			aksesoris, errAksesoris := service.aksesorisRepository.FindById(ctx, tx, keranjang.KodeBarang)
-			if errAksesoris != nil {
-				panic(exception.NewNotFoundError(err.Error()))
-			}
+func (service *KeranjangServiceImpl) FindByKodeTransaksi(ctx context.Context, kodeTransaksi int) []web.KeranjangResponse {
+	tx, err := service.DB.Begin()
+	helper.PanicIfError(err)
+	defer helper.CommitOrRollback(tx)
 
-			keranjangs[i].Data = helper.ToAksesorisResponse(aksesoris)
-		}
-
-		if (keranjang.TipeBarang == "BUKU") {
-			buku, errBuku := service.bukuRepository.FindById(ctx, tx, keranjang.KodeBarang)
-			if errBuku != nil {
-				panic(exception.NewNotFoundError(err.Error()))
-			}
-
-			keranjangs[i].Data = helper.ToBukuResponse(buku)
-		}
-	}
-
+	keranjangs := service.KeranjangRepository.FindByKodeTransaksi(ctx, tx, kodeTransaksi)
 	return helper.ToKeranjangResponses(keranjangs)
 }

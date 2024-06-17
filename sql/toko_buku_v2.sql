@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Waktu pembuatan: 10 Jun 2024 pada 11.36
+-- Waktu pembuatan: 17 Jun 2024 pada 16.05
 -- Versi server: 10.4.28-MariaDB
 -- Versi PHP: 8.0.28
 
@@ -30,18 +30,11 @@ SET time_zone = "+00:00";
 CREATE TABLE `aksesoris` (
   `kode` varchar(255) NOT NULL,
   `nama_barang` varchar(255) NOT NULL,
+  `deskripsi` text DEFAULT NULL,
+  `gambar` varchar(255) NOT NULL,
   `harga` int(255) NOT NULL,
-  `stok` int(11) NOT NULL
+  `stok` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data untuk tabel `aksesoris`
---
-
-INSERT INTO `aksesoris` (`kode`, `nama_barang`, `harga`, `stok`) VALUES
-('cr332', 'Correction Tape', 12000, 0),
-('pilot1222', 'Bolpoint Pilot', 4500, 0),
-('standar2000', 'Bolpoint Standard', 3500, 0);
 
 -- --------------------------------------------------------
 
@@ -57,15 +50,6 @@ CREATE TABLE `data_admin` (
   `role` enum('OWNER','CASHIER','STAFF','') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data untuk tabel `data_admin`
---
-
-INSERT INTO `data_admin` (`id_admin`, `username`, `password`, `nama_lengkap`, `role`) VALUES
-(12434, 'abidmaulana007@gmail.com', 'b7cilroy111', 'Abid Fakhri Maulana', 'OWNER'),
-(12437, 'abidmaulana001@gmail.com', 'AAZsCIXVKYBpXa0DPPo', 'Abid Fakhri Maulana CASHIER', 'CASHIER'),
-(12438, 'abidmaulana001@gmail.com', 'AAZsCIXVKYBpXa0DPPo', 'Abid Fakhri Maulana STAFF', 'STAFF');
-
 -- --------------------------------------------------------
 
 --
@@ -77,24 +61,13 @@ CREATE TABLE `data_buku` (
   `nama_buku` varchar(255) NOT NULL,
   `penerbit` varchar(255) NOT NULL,
   `gambar` varchar(255) NOT NULL,
+  `deskripsi` text DEFAULT NULL,
   `pengarang` varchar(255) NOT NULL,
   `genre` enum('Kuliner','Pendidikan','Komik','Biografi','Novel','Keagamaan') NOT NULL,
   `rilis` date NOT NULL,
-  `harga` int(255) NOT NULL
+  `harga` int(255) NOT NULL,
+  `stok` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data untuk tabel `data_buku`
---
-
-INSERT INTO `data_buku` (`kode_buku`, `nama_buku`, `penerbit`, `gambar`, `pengarang`, `genre`, `rilis`, `harga`) VALUES
-('ayamsayur', 'BH2111', 'Sugenks', 'jojojojo', 'gakManuks', 'Kuliner', '2024-05-02', 200000),
-('ayamssssayur', 'BH2111', 'Sugenks', 'jojojojo', 'gakManuks', 'Kuliner', '2024-05-10', 200000),
-('bhjsdabjhdasd', 'dnskajndjas', 'dnsadnsad', 'dskajdhsad', 'dnbshakbdksad', 'Kuliner', '2024-08-07', 3217932),
-('BUKU1234', 'Mencari kebenaran', 'Anonymous', 'upload-312371505.png', 'Anonymous', 'Kuliner', '2024-08-27', 1000000),
-('BUKUZZZZ', 'Mencari kebenaran', 'Anonymous', 'upload-3191251449.png', 'Anonymous', 'Kuliner', '2024-08-27', 1000000),
-('nicholas2121', 'How To Be A Nichole', 'GedaGediGedaO', 'adve', 'WongKenthir', 'Kuliner', '2003-04-22', 50000),
-('segitiga', 'Segitiga Bermuda', 'Daharjo', 'jasd', 'Julianto', 'Kuliner', '2002-06-21', 50000);
 
 -- --------------------------------------------------------
 
@@ -110,14 +83,6 @@ CREATE TABLE `data_member` (
   `alamat` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data untuk tabel `data_member`
---
-
-INSERT INTO `data_member` (`id_member`, `nama_lengkap`, `email`, `telepon`, `alamat`) VALUES
-(210431, 'Asep Saipul Hamdan Jamaludin', '', '', ''),
-(222334, 'SUK MAI', '', '', '');
-
 -- --------------------------------------------------------
 
 --
@@ -125,33 +90,12 @@ INSERT INTO `data_member` (`id_member`, `nama_lengkap`, `email`, `telepon`, `ala
 --
 
 CREATE TABLE `keranjang` (
+  `kode_keranjang` int(11) NOT NULL,
   `kode_transaksi` int(255) DEFAULT NULL,
+  `tipe_barang` enum('AKSESORIS','BUKU') NOT NULL,
   `kode_barang` varchar(255) NOT NULL,
-  `total_barang` int(255) DEFAULT NULL,
-  `total_harga` int(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Struktur dari tabel `lokasi_buku`
---
-
-CREATE TABLE `lokasi_buku` (
-  `kode_buku` varchar(255) NOT NULL,
-  `genre` varchar(255) NOT NULL,
-  `nomor_rak` int(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Struktur dari tabel `stok_barang`
---
-
-CREATE TABLE `stok_barang` (
-  `kode_barang` varchar(255) NOT NULL,
-  `stok` int(12) NOT NULL
+  `total_barang` int(255) DEFAULT 0,
+  `harga` int(11) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -161,7 +105,7 @@ CREATE TABLE `stok_barang` (
 --
 
 CREATE TABLE `transaksi` (
-  `kode_transaksi` int(255) NOT NULL,
+  `kode_transaksi` int(11) NOT NULL,
   `nomor_member` int(255) NOT NULL,
   `id_admin` int(255) NOT NULL,
   `tanggal` date NOT NULL,
@@ -200,19 +144,7 @@ ALTER TABLE `data_member`
 -- Indeks untuk tabel `keranjang`
 --
 ALTER TABLE `keranjang`
-  ADD KEY `kode_transaksi` (`kode_transaksi`);
-
---
--- Indeks untuk tabel `lokasi_buku`
---
-ALTER TABLE `lokasi_buku`
-  ADD KEY `kode_buku` (`kode_buku`);
-
---
--- Indeks untuk tabel `stok_barang`
---
-ALTER TABLE `stok_barang`
-  ADD PRIMARY KEY (`kode_barang`);
+  ADD PRIMARY KEY (`kode_keranjang`);
 
 --
 -- Indeks untuk tabel `transaksi`
@@ -228,36 +160,25 @@ ALTER TABLE `transaksi`
 -- AUTO_INCREMENT untuk tabel `data_admin`
 --
 ALTER TABLE `data_admin`
-  MODIFY `id_admin` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12441;
+  MODIFY `id_admin` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12442;
 
 --
 -- AUTO_INCREMENT untuk tabel `data_member`
 --
 ALTER TABLE `data_member`
-  MODIFY `id_member` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=222336;
+  MODIFY `id_member` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=222337;
 
 --
--- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
---
-
---
--- Ketidakleluasaan untuk tabel `keranjang`
+-- AUTO_INCREMENT untuk tabel `keranjang`
 --
 ALTER TABLE `keranjang`
-  ADD CONSTRAINT `keranjang_ibfk_1` FOREIGN KEY (`kode_transaksi`) REFERENCES `transaksi` (`kode_transaksi`);
+  MODIFY `kode_keranjang` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
--- Ketidakleluasaan untuk tabel `lokasi_buku`
+-- AUTO_INCREMENT untuk tabel `transaksi`
 --
-ALTER TABLE `lokasi_buku`
-  ADD CONSTRAINT `lokasi_buku_ibfk_1` FOREIGN KEY (`kode_buku`) REFERENCES `data_buku` (`kode_buku`);
-
---
--- Ketidakleluasaan untuk tabel `stok_barang`
---
-ALTER TABLE `stok_barang`
-  ADD CONSTRAINT `stok_barang_ibfk_1` FOREIGN KEY (`kode_barang`) REFERENCES `data_buku` (`kode_buku`),
-  ADD CONSTRAINT `stok_barang_ibfk_2` FOREIGN KEY (`kode_barang`) REFERENCES `aksesoris` (`kode`);
+ALTER TABLE `transaksi`
+  MODIFY `kode_transaksi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -13,17 +13,45 @@ import (
 
 type KeranjangControllerImpl struct {
 	KeranjangService service.KeranjangService
+	BukuService service.BukuService
+	AksesorisService service.AksesorisService
 	BookDirectoryPath string
 	AccessoryDirectoryPath string
 
 }
 
-func NewKeranjangController(keranjangService service.KeranjangService) KeranjangController {
+func NewKeranjangController(keranjangService service.KeranjangService, bukuService service.BukuService, aksesorisService service.AksesorisService) KeranjangController {
 	return &KeranjangControllerImpl{
 		KeranjangService: keranjangService,
+		BukuService: bukuService,
+		AksesorisService: aksesorisService,
 		BookDirectoryPath: os.Getenv("BOOK_DIRECTORY_PATH"),
 		AccessoryDirectoryPath: os.Getenv("ACCSESSORY_DIRECTORY_PATH"),
 	}
+}
+
+func (controller *KeranjangControllerImpl) FetchMetaData(request *http.Request, keranjang web.KeranjangResponse) web.KeranjangResponse {
+	if (keranjang.TipeBarang == "AKSESORIS") {
+		aksesorisResponse := controller.AksesorisService.FindById(request.Context(), keranjang.KodeBarang)
+		keranjang.Barang = aksesorisResponse
+	}
+
+	if (keranjang.TipeBarang == "BUKU") {
+		BukuResponse := controller.BukuService.FindById(request.Context(), keranjang.KodeBarang)
+		keranjang.Barang = BukuResponse
+	}
+
+	if dataAksesoris, ok := keranjang.Barang.(web.AksesorisResponse); ok {
+		dataAksesoris.Image = request.Host + "/"+ controller.AccessoryDirectoryPath +"/"  + dataAksesoris.Image
+		keranjang.Barang = dataAksesoris
+    }
+
+	if dataBuku, ok := keranjang.Barang.(web.BukuResponse); ok {
+		dataBuku.Image = request.Host + "/"+ controller.BookDirectoryPath +"/"  + dataBuku.Image
+		keranjang.Barang = dataBuku
+    }
+
+	return keranjang
 }
 
 func (controller *KeranjangControllerImpl) Create(writer http.ResponseWriter, request *http.Request, params httprouter.Params) {
@@ -32,15 +60,7 @@ func (controller *KeranjangControllerImpl) Create(writer http.ResponseWriter, re
 
 	keranjangResponse := controller.KeranjangService.Create(request.Context(), KeranjangCreateRequest)
 
-	if dataAksesoris, ok := keranjangResponse.Data.(web.AksesorisResponse); ok {
-		dataAksesoris.Image = request.Host + "/"+ controller.AccessoryDirectoryPath +"/"  + dataAksesoris.Image
-		keranjangResponse.Data = dataAksesoris
-    }
-
-	if dataBuku, ok := keranjangResponse.Data.(web.BukuResponse); ok {
-		dataBuku.Image = request.Host + "/"+ controller.BookDirectoryPath +"/"  + dataBuku.Image
-		keranjangResponse.Data = dataBuku
-    }
+	keranjangResponse = controller.FetchMetaData(request, keranjangResponse)
 
 	webResponse := web.WebResponse{
 		Code:   200,
@@ -61,16 +81,8 @@ func (controller *KeranjangControllerImpl) UpdateTotalBarang(writer http.Respons
 	helper.PanicIfError(err)
 
 	keranjangResponse := controller.KeranjangService.UpdateTotalBarang(request.Context(), keranjangUpdateStockRequest, id)
-
-	if dataAksesoris, ok := keranjangResponse.Data.(web.AksesorisResponse); ok {
-		dataAksesoris.Image = request.Host + "/"+ controller.AccessoryDirectoryPath +"/"  + dataAksesoris.Image
-		keranjangResponse.Data = dataAksesoris
-    }
-
-	if dataBuku, ok := keranjangResponse.Data.(web.BukuResponse); ok {
-		dataBuku.Image = request.Host + "/"+ controller.BookDirectoryPath +"/"  + dataBuku.Image
-		keranjangResponse.Data = dataBuku
-    }
+	
+	keranjangResponse = controller.FetchMetaData(request, keranjangResponse)
 
 	webResponse := web.WebResponse{
 		Code:   200,
@@ -104,15 +116,7 @@ func (controller *KeranjangControllerImpl) FindById(writer http.ResponseWriter, 
 
 	keranjangResponse := controller.KeranjangService.FindById(request.Context(), id)
 
-	if dataAksesoris, ok := keranjangResponse.Data.(web.AksesorisResponse); ok {
-		dataAksesoris.Image = request.Host + "/"+ controller.AccessoryDirectoryPath +"/"  + dataAksesoris.Image
-		keranjangResponse.Data = dataAksesoris
-    }
-
-	if dataBuku, ok := keranjangResponse.Data.(web.BukuResponse); ok {
-		dataBuku.Image = request.Host + "/"+ controller.BookDirectoryPath +"/"  + dataBuku.Image
-		keranjangResponse.Data = dataBuku
-    }
+	keranjangResponse = controller.FetchMetaData(request, keranjangResponse)
 	
 	webResponse := web.WebResponse{
 		Code:   200,
@@ -128,15 +132,7 @@ func (controller *KeranjangControllerImpl) FindAll(writer http.ResponseWriter, r
 	keranjangResponses := controller.KeranjangService.FindAll(request.Context())
 
 	for i, keranjangResponse := range keranjangResponses {
-		if dataAksesoris, ok := keranjangResponse.Data.(web.AksesorisResponse); ok {
-			dataAksesoris.Image = request.Host + "/"+ controller.AccessoryDirectoryPath +"/"  + dataAksesoris.Image
-			keranjangResponses[i].Data = dataAksesoris
-		}
-	
-		if dataBuku, ok := keranjangResponse.Data.(web.BukuResponse); ok {
-			dataBuku.Image = request.Host + "/"+ controller.BookDirectoryPath +"/"  + dataBuku.Image
-			keranjangResponses[i].Data = dataBuku
-		}
+		keranjangResponses[i] = controller.FetchMetaData(request, keranjangResponse)
 	}
 
 	webResponse := web.WebResponse{

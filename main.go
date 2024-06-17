@@ -42,9 +42,13 @@ func main() {
 
 	keranjangRepository := repository.NewKeranjangRepository()
 	keranjangService := service.NewKeranjangService(keranjangRepository,db,validate)
-	keranjangController := controller.NewKeranjangController(keranjangService)
+	keranjangController := controller.NewKeranjangController(keranjangService, bukuService, aksesorisService)
 
-	router := app.NewRouter(adminController,memberController, bukuController,aksesorisController, keranjangController)
+	transaksiRepository := repository.NewTransaksiRepository()
+	transaksiService := service.NewTransaksiService(transaksiRepository,db,validate)
+	transaksiController := controller.NewTransaksiController(transaksiService, keranjangService, bukuService, aksesorisService)
+
+	router := app.NewRouter(adminController, memberController, bukuController, aksesorisController, keranjangController, transaksiController)
 
 	server := http.Server{
 		Addr: host,

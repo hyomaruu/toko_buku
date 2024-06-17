@@ -7,5 +7,5 @@ type KeranjangResponse struct {
 	KodeBarang     	string 
 	TotalBarang     int 
 	Harga     		int 
-	Data	 		interface{}
+	Barang	 		interface{}
 }

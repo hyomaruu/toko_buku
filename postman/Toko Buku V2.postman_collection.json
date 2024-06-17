@@ -1,0 +1,1099 @@
+{
+	"info": {
+		"_postman_id": "45a0b99f-1be8-4ca3-9a67-37adcf5b202d",
+		"name": "Toko Buku V2",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "5689777"
+	},
+	"item": [
+		{
+			"name": "Admin",
+			"item": [
+				{
+					"name": "Get Admins",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{apiKey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/admins",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admins"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Admin",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{apiKey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/admins/12434",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admins",
+								"12434"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Admin",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{apiKey}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\":\"abidmaulana010@gmail.com\",\n    \"password\":\"AAZsCIXVKYBpXa0DPPo\",\n    \"nama_lengkap\":\"Abid Fakhri Maulana STAFF SSS\",\n    \"role\":\"STAFF\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/admins",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admins"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Admin",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{apiKey}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\":\"abidmaulana010@gmail.com\",\n    \"password\":\"AAZsCIXVKYBpXa0DPPo\",\n    \"nama_lengkap\":\"Abid Fakhri STAFF NNN\",\n    \"role\": \"STAFF\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/admins/12441",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admins",
+								"12441"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Admin",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{apiKey}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/admins/12441",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admins",
+								"12441"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Aksesoris",
+			"item": [
+				{
+					"name": "Get Aksesoris",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{apiKey}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/aksesoris",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"aksesoris"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Aksesoris By Kode",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{apiKey}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/aksesoris/BARANG1234",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"aksesoris",
+								"BARANG1234"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Aksesoris",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{apiKey}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "kode",
+									"value": "AKSESORIS123msmsmsms",
+									"type": "text"
+								},
+								{
+									"key": "nama_barang",
+									"value": "Test BarangMMM",
+									"type": "text"
+								},
+								{
+									"key": "gambar",
+									"type": "file",
+									"src": "/Users/abidfakhrimaulana/Downloads/dummy.png"
+								},
+								{
+									"key": "harga",
+									"value": "10000",
+									"type": "text"
+								},
+								{
+									"key": "deskripsi",
+									"value": "ndisandijnsakdnkjsad",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/aksesoris",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"aksesoris"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Aksesoris",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{apiKey}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "nama_barang",
+									"value": "Penanda Buku AB",
+									"type": "text"
+								},
+								{
+									"key": "gambar",
+									"type": "file",
+									"src": "/Users/abidfakhrimaulana/Downloads/dummy.png"
+								},
+								{
+									"key": "harga",
+									"value": "999999",
+									"type": "text"
+								},
+								{
+									"key": "deskripsi",
+									"value": "lorem ipsum dolor sit amet",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/aksesoris/AKSESORIS123dddd",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"aksesoris",
+								"AKSESORIS123dddd"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Aksesoris Stok",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{apiKey}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"stok\": 99\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/aksesoris/AKSESORIS123dddd/stok",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"aksesoris",
+								"AKSESORIS123dddd",
+								"stok"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Aksesoris",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{apiKey}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/aksesoris/AKSESORIS123",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"aksesoris",
+								"AKSESORIS123"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Member",
+			"item": [
+				{
+					"name": "Get Members",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{apiKey}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/members",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"members"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Member",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{apiKey}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/members/210431",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"members",
+								"210431"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Member",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{apiKey}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nama_lengkap\":\"Abid FM\",\n    \"email\":\"abidmaulana008@gmail.com\",\n    \"telepon\":\"089324324324\",\n    \"alamat\": \"jl kemuning dalam 6 123456\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/members",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"members"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Member",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{apiKey}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nama_lengkap\":\"Abid FM V2\",\n    \"email\":\"abidmaulana008@gmail.com\",\n    \"telepon\":\"089324324324\",\n    \"alamat\": \"jl kemuning dalam 6 123456\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/members/222336",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"members",
+								"222336"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Member",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{apiKey}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/members/222336",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"members",
+								"222336"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Buku",
+			"item": [
+				{
+					"name": "Get Buku",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{apiKey}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/buku",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"buku"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Buku By Kode",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{apiKey}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/buku/BUKUJJJJmmmmccc",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"buku",
+								"BUKUJJJJmmmmccc"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Buku",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{apiKey}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "kode_buku",
+									"value": "BUKUJJJJmmmmccc",
+									"type": "text"
+								},
+								{
+									"key": "nama_buku",
+									"value": "Mencari kebenaran V2",
+									"type": "text"
+								},
+								{
+									"key": "penerbit",
+									"value": "Anonymous",
+									"type": "text"
+								},
+								{
+									"key": "gambar",
+									"type": "file",
+									"src": "/Users/abidfakhrimaulana/Downloads/dummy.png"
+								},
+								{
+									"key": "pengarang",
+									"value": "Anonymous",
+									"type": "text"
+								},
+								{
+									"key": "genre",
+									"value": "Kuliner",
+									"type": "text"
+								},
+								{
+									"key": "rilis",
+									"value": "2024-08-27",
+									"type": "text"
+								},
+								{
+									"key": "harga",
+									"value": "1000000",
+									"type": "text"
+								},
+								{
+									"key": "deskripsi",
+									"value": "dnksjandjksadsamkdsad",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/buku",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"buku"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Buku",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{apiKey}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "nama_buku",
+									"value": "Mencari kebenaran V JJJJ",
+									"type": "text"
+								},
+								{
+									"key": "penerbit",
+									"value": "Anonymous",
+									"type": "text"
+								},
+								{
+									"key": "gambar",
+									"type": "file",
+									"src": "/Users/abidfakhrimaulana/Downloads/dummy.png"
+								},
+								{
+									"key": "pengarang",
+									"value": "Anonymous",
+									"type": "text"
+								},
+								{
+									"key": "genre",
+									"value": "Kuliner",
+									"type": "text"
+								},
+								{
+									"key": "rilis",
+									"value": "2024-08-27",
+									"type": "text"
+								},
+								{
+									"key": "harga",
+									"value": "9500000",
+									"type": "text"
+								},
+								{
+									"key": "deskripsi",
+									"value": "BUKUJJJJmmmmcccdsa jkndnsad",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/buku/BUKUJJJJmmmmccc",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"buku",
+								"BUKUJJJJmmmmccc"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Buku Stok",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{apiKey}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"stok\": 1999\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/buku/BUKUJJJJmmmmccc/stok",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"buku",
+								"BUKUJJJJmmmmccc",
+								"stok"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Buku",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{apiKey}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/buku/BUKUJJJJJ",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"buku",
+								"BUKUJJJJJ"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Keranjang",
+			"item": [
+				{
+					"name": "Get Keranjang",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{apiKey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/keranjang",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"keranjang"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Keranjang By Kode",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{apiKey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/keranjang/3",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"keranjang",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Keranjang",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{apiKey}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"tipe_barang\":\"BUKU\",\n    \"kode_barang\":\"BUKUJJJJJCCCC\",\n    \"total_barang\": 2,\n    \"harga\": 1111\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/keranjang",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"keranjang"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Keranjang Total",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{apiKey}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"total_barang\": 100\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/keranjang/2/total",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"keranjang",
+								"2",
+								"total"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Keranjang",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{apiKey}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/keranjang/4",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"keranjang",
+								"4"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Transaksi",
+			"item": [
+				{
+					"name": "Get Transaksi",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{apiKey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/transaksi",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"transaksi"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Transaksi By Kode",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{apiKey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/transaksi/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"transaksi",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Transaksi",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{apiKey}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nomor_member\":\"210431\",\n    \"id_admin\":\"12437\",\n    \"tanggal\": \"2024-08-01\",\n    \"total_harga\": 10000,\n    \"list_keranjang\": [2, 3]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/transaksi",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"transaksi"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

@@ -9,7 +9,7 @@ import (
 	"github.com/julienschmidt/httprouter"
 )
 
-func NewRouter(adminController controller.AdminController,memberController controller.MemberController, bukuController controller.BukuController, aksesorisController controller.AksesorisController, keranjangController controller.KeranjangController) *httprouter.Router{
+func NewRouter(adminController controller.AdminController,memberController controller.MemberController, bukuController controller.BukuController, aksesorisController controller.AksesorisController, keranjangController controller.KeranjangController, transaksiController controller.TransaksiController) *httprouter.Router{
 	apiRest := os.Getenv("API_REST")
 	bookDirectoryPath := os.Getenv("BOOK_DIRECTORY_PATH")
 	accessoryDirectoryPath := os.Getenv("ACCSESSORY_DIRECTORY_PATH")
@@ -53,6 +53,11 @@ func NewRouter(adminController controller.AdminController,memberController contr
 	router.POST(apiRest+"/keranjang",keranjangController.Create)
 	router.PUT(apiRest+"/keranjang/:keranjangId/total",keranjangController.UpdateTotalBarang)
 	router.DELETE(apiRest+"/keranjang/:keranjangId",keranjangController.Delete)
+
+	//transaksi
+	router.GET(apiRest+"/transaksi",transaksiController.FindAll)
+	router.GET(apiRest+"/transaksi/:transaksiId",transaksiController.FindById)
+	router.POST(apiRest+"/transaksi",transaksiController.Create)
 
 
 	router.ServeFiles("/" + bookDirectoryPath +  "/*filepath", http.Dir(bookDirectoryPath))

@@ -93,7 +93,7 @@ func ToKeranjangResponse(keranjang domain.Keranjang) web.KeranjangResponse {
 		KodeBarang     	: keranjang.KodeBarang, 
 		TotalBarang     : keranjang.TotalBarang, 
 		Harga     		: keranjang.Harga, 
-		Data     		: keranjang.Data, 
+		Barang     		: keranjang.Barang, 
 	}
 }
 
@@ -101,6 +101,25 @@ func ToKeranjangResponses(keranjangs []domain.Keranjang) []web.KeranjangResponse
 	var keranjangResponses []web.KeranjangResponse
 	for _, keranjang := range keranjangs {
 		keranjangResponses = append(keranjangResponses, ToKeranjangResponse(keranjang))
+	}
+	return keranjangResponses
+}
+
+func ToTransaksiResponse(keranjang domain.Transaksi) web.TransaksiResponse {
+	Tanggal := keranjang.Tanggal.Format("2006-01-02")
+	return web.TransaksiResponse{
+		KodeTransaksi 	: keranjang.KodeTransaksi, 
+		NomorMember 	: keranjang.NomorMember, 
+		IdAdmin 		: keranjang.IdAdmin, 
+		Tanggal 		: Tanggal, 
+		ListKeranjang 	: keranjang.ListKeranjang, 
+	}
+}
+
+func ToTransaksiResponses(keranjangs []domain.Transaksi) []web.TransaksiResponse {
+	var keranjangResponses []web.TransaksiResponse
+	for _, keranjang := range keranjangs {
+		keranjangResponses = append(keranjangResponses, ToTransaksiResponse(keranjang))
 	}
 	return keranjangResponses
 }
