@@ -82,6 +82,22 @@ func(service *AksesorisServiceImpl) UpdateStok(ctx context.Context, request web.
 	return helper.ToAksesorisResponse(aksesoris)
 }
 
+func(service *AksesorisServiceImpl) ReduceStok(ctx context.Context, qty int, aksesorisId string) web.AksesorisResponse{
+	tx,err := service.DB.Begin()
+	helper.PanicIfError(err)
+	defer helper.CommitOrRollback(tx)
+
+	aksesoris, err := service.AksesorisRepository.FindById(ctx,tx, aksesorisId)
+	if err!=nil{
+		panic(exception.NewNotFoundError(err.Error()))
+	}
+
+	aksesoris.Stok = qty
+
+	aksesoris = service.AksesorisRepository.ReduceStok(ctx,tx, aksesoris, aksesorisId)
+	return helper.ToAksesorisResponse(aksesoris)
+}
+
 func(service *AksesorisServiceImpl) Delete(ctx context.Context, aksesorisId string){
 	tx, err := service.DB.Begin()
 	helper.PanicIfError(err)
@@ -99,10 +115,11 @@ func(service *AksesorisServiceImpl) FindById(ctx context.Context, aksesorisId st
 	helper.PanicIfError(err)
 	defer helper.CommitOrRollback(tx)
 
-	aksesoris,err := service.AksesorisRepository.FindById(ctx,tx,aksesorisId)
+	aksesoris, err := service.AksesorisRepository.FindById(ctx,tx,aksesorisId)
 	if err!=nil{
 		panic(exception.NewNotFoundError(err.Error()))
 	}
+
 	return helper.ToAksesorisResponse(aksesoris)
 }
 

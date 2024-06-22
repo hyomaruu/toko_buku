@@ -40,6 +40,14 @@ func (repository *BukuRepositoryImpl) UpdateStok(ctx context.Context, tx *sql.Tx
 	return buku
 }
 
+func (repository *BukuRepositoryImpl) ReduceStok(ctx context.Context, tx *sql.Tx, buku domain.Buku, bukuId string) domain.Buku {
+	SQL := "update data_buku set stok = stok - ? where kode_buku = ?"
+	_, err := tx.ExecContext(ctx, SQL, buku.Stok, bukuId)
+	helper.PanicIfError(err)
+
+	return buku
+}
+
 func (repository *BukuRepositoryImpl) Delete(ctx context.Context, tx *sql.Tx, bukuId string) {
 	SQL := "delete from data_buku where kode_buku = ?"
 	_, err := tx.ExecContext(ctx, SQL, bukuId)

@@ -9,7 +9,6 @@ func ToAdminResponse(admin domain.Admin) web.AdminResponse {
 	return web.AdminResponse{
 		Id:       admin.Id,
 		Username: admin.Username,
-		Password: admin.Password,
 		Name:     admin.Name,
 		Role:     admin.Role,
 	}

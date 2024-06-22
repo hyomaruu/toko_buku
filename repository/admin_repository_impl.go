@@ -40,14 +40,14 @@ func (repository *AdminRepositoryImpl) Delete(ctx context.Context, tx *sql.Tx, a
 	helper.PanicIfError(err)
 }
 func (repository *AdminRepositoryImpl) FindById(ctx context.Context, tx *sql.Tx, adminId int) (domain.Admin, error) {
-	SQL := "select * from data_admin where id_admin = ?"
+	SQL := "select id_admin, username, nama_lengkap, role from data_admin where id_admin = ?"
 	rows, err := tx.QueryContext(ctx, SQL, adminId)
 	helper.PanicIfError(err)
 	defer rows.Close()
 
 	admin := domain.Admin{}
 	if rows.Next() {
-		err := rows.Scan(&admin.Id, &admin.Username, &admin.Password, &admin.Name, &admin.Role)
+		err := rows.Scan(&admin.Id, &admin.Username, &admin.Name, &admin.Role)
 		helper.PanicIfError(err)
 		return admin, nil
 	} else {
@@ -55,7 +55,7 @@ func (repository *AdminRepositoryImpl) FindById(ctx context.Context, tx *sql.Tx,
 	}
 }
 func (repository *AdminRepositoryImpl) FindAll(ctx context.Context, tx *sql.Tx) []domain.Admin {
-	SQL := "select * from data_admin"
+	SQL := "select id_admin, username, nama_lengkap, role from data_admin"
 	rows, err := tx.QueryContext(ctx, SQL)
 	helper.PanicIfError(err)
 	defer rows.Close()
@@ -63,7 +63,7 @@ func (repository *AdminRepositoryImpl) FindAll(ctx context.Context, tx *sql.Tx) 
 	var admins []domain.Admin
 	for rows.Next() {
 		admin := domain.Admin{}
-		err := rows.Scan(&admin.Id, &admin.Username, &admin.Password, &admin.Name, &admin.Role)
+		err := rows.Scan(&admin.Id, &admin.Username, &admin.Name, &admin.Role)
 		helper.PanicIfError(err)
 		admins = append(admins, admin)
 	}

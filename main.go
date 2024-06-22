@@ -24,6 +24,7 @@ func main() {
 
 	validate := validator.New()
 	db := app.NewDB()
+
 	adminRepository := repository.NewAdminRepositry()
 	adminService := service.NewAdminService(adminRepository, db, validate)
 	adminController := controller.NewAdminController(adminService)
@@ -48,7 +49,12 @@ func main() {
 	transaksiService := service.NewTransaksiService(transaksiRepository,db,validate)
 	transaksiController := controller.NewTransaksiController(transaksiService, keranjangService, bukuService, aksesorisService)
 
-	router := app.NewRouter(adminController, memberController, bukuController, aksesorisController, keranjangController, transaksiController)
+
+	authRepository := repository.NewAuthRepositry()
+	authService := service.NewAuthService(authRepository, db, validate)
+	authController := controller.NewAuthController(authService)
+
+	router := app.NewRouter(adminController, memberController, bukuController, aksesorisController, keranjangController, transaksiController, authController)
 
 	server := http.Server{
 		Addr: host,

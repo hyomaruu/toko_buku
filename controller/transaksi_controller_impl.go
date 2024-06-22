@@ -56,6 +56,16 @@ func (controller *TransaksiControllerImpl) FetchMetaData(request *http.Request, 
 	return keranjang
 }
 
+func (controller *TransaksiControllerImpl) ReduceStok(request *http.Request, keranjang web.KeranjangResponse) {
+	if (keranjang.TipeBarang == "AKSESORIS") {
+		controller.AksesorisService.ReduceStok(request.Context(), keranjang.TotalBarang, keranjang.KodeBarang)
+	}
+
+	if (keranjang.TipeBarang == "BUKU") {
+		controller.BukuService.ReduceStok(request.Context(), keranjang.TotalBarang, keranjang.KodeBarang)
+	}
+}
+
 func (controller *TransaksiControllerImpl) Create(writer http.ResponseWriter, request *http.Request, params httprouter.Params) {
 	TransaksiCreateRequest := web.TransaksiCreateRequest{}
 	helper.ReadFromRequestBody(request, &TransaksiCreateRequest)
@@ -65,12 +75,12 @@ func (controller *TransaksiControllerImpl) Create(writer http.ResponseWriter, re
 	for _, keranjangId := range TransaksiCreateRequest.ListKeranjang {
 		controller.KeranjangService.UpdateKodeTransaksi(request.Context(), keranjangId, int(transaksiResponse.KodeTransaksi) )
 	}
-
 	
 	transaksiResponse = controller.TransaksiService.FindById(request.Context(), int(transaksiResponse.KodeTransaksi))
 	keranjangResponses := controller.KeranjangService.FindByKodeTransaksi(request.Context(), int(transaksiResponse.KodeTransaksi))
 
 	for i, keranjangResponse := range keranjangResponses {
+		controller.ReduceStok(request, keranjangResponse)
 		keranjangResponses[i] = controller.FetchMetaData(request, keranjangResponse)
 	}
 

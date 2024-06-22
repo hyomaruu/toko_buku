@@ -40,6 +40,14 @@ func (repository *AksesorisRepsitoryImpl) UpdateStok(ctx context.Context, tx *sq
 	return aksesoris
 }
 
+func (repository *AksesorisRepsitoryImpl) ReduceStok(ctx context.Context, tx *sql.Tx, aksesoris domain.Aksesoris, aksesorisId string) domain.Aksesoris {
+	SQL := "update aksesoris set stok = - ? where kode = ?"
+	_, err := tx.ExecContext(ctx, SQL, aksesoris.Stok, aksesorisId)
+	helper.PanicIfError(err)
+
+	return aksesoris
+}
+
 func (repository *AksesorisRepsitoryImpl) Delete(ctx context.Context, tx *sql.Tx, aksesorisId string) {
 	SQL := "delete from aksesoris where kode = ?"
 	_, err := tx.ExecContext(ctx, SQL, aksesorisId)

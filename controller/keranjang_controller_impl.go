@@ -57,6 +57,14 @@ func (controller *KeranjangControllerImpl) FetchMetaData(request *http.Request, 
 func (controller *KeranjangControllerImpl) Create(writer http.ResponseWriter, request *http.Request, params httprouter.Params) {
 	KeranjangCreateRequest := web.KeranjangCreateRequest{}
 	helper.ReadFromRequestBody(request, &KeranjangCreateRequest)
+	
+	if (KeranjangCreateRequest.TipeBarang == "AKSESORIS") {
+		KeranjangCreateRequest.Harga = controller.AksesorisService.FindById(request.Context(), KeranjangCreateRequest.KodeBarang).Harga
+	}
+
+	if (KeranjangCreateRequest.TipeBarang == "BUKU") {
+		KeranjangCreateRequest.Harga = controller.BukuService.FindById(request.Context(), KeranjangCreateRequest.KodeBarang).Harga
+	}
 
 	keranjangResponse := controller.KeranjangService.Create(request.Context(), KeranjangCreateRequest)
 

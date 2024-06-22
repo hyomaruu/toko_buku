@@ -61,8 +61,11 @@ func (service *BukuServiceImpl) Update(ctx context.Context, request web.BukuUpda
 
 	buku, err := service.BukuRepository.FindById(ctx, tx, bukuId)
 	if err != nil {
+		
+
 		panic(exception.NewNotFoundError(err.Error()))
 	}
+
 
 	buku.Name = request.Name
 	buku.Penerbit = request.Penerbit
@@ -91,6 +94,22 @@ func (service *BukuServiceImpl) UpdateStok(ctx context.Context, request web.Buku
 	buku.Stok = request.Stok
 
 	buku = service.BukuRepository.UpdateStok(ctx, tx, buku, bukuId)
+	return helper.ToBukuResponse(buku)
+}
+
+func (service *BukuServiceImpl) ReduceStok(ctx context.Context, qty int, bukuId string) web.BukuResponse {
+	tx, err := service.DB.Begin()
+	helper.PanicIfError(err)
+	defer helper.CommitOrRollback(tx)
+
+	buku, err := service.BukuRepository.FindById(ctx, tx, bukuId)
+	if err != nil {
+		panic(exception.NewNotFoundError(err.Error()))
+	}
+
+	buku.Stok = qty
+
+	buku = service.BukuRepository.ReduceStok(ctx, tx, buku, bukuId)
 	return helper.ToBukuResponse(buku)
 }
 
