@@ -10,6 +10,8 @@ import (
 	"toko-buku/repository"
 	"toko-buku/service"
 
+	"github.com/rs/cors"
+
 	_ "github.com/go-sql-driver/mysql"
 
 	"github.com/go-playground/validator/v10"
@@ -56,10 +58,14 @@ func main() {
 
 	router := app.NewRouter(adminController, memberController, bukuController, aksesorisController, keranjangController, transaksiController, authController)
 
+	handler := cors.AllowAll().Handler(router)
+
 	server := http.Server{
 		Addr: host,
-		Handler: router,
+		Handler: handler,
 	}
+
+	
 	
 
 	fmt.Printf("Server started at %s\n", server.Addr)
