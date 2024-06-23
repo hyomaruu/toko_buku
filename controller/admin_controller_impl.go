@@ -21,6 +21,15 @@ func NewAdminController(adminService service.AdminService) AdminController {
 }
 
 func (controller *AdminControllerImpl) Create(writer http.ResponseWriter, request *http.Request, params httprouter.Params) {
+	// writer.Header().Set("Access-Control-Allow-Origin", "http://localhost:4200")
+	// writer.Header().Set("Access-Control-Allow-Methods", "POST")
+	// writer.Header().Set("Access-Control-Allow-Headers", "*")
+
+	// if request.Method == "OPTIONS" {
+	// 	writer.Write([]byte("allowed"))
+	// 	return
+	// }
+
 	AdminCreateRequest := web.AdminCreateRequest{}
 	helper.ReadFromRequestBody(request, &AdminCreateRequest)
 
