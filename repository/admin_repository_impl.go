@@ -85,7 +85,7 @@ func (repository *AdminRepositoryImpl) FindAll(ctx context.Context, tx *sql.Tx, 
 }
 
 func (repository *AdminRepositoryImpl) RoleCounter(ctx context.Context, tx *sql.Tx) []domain.AdminCounter {
-	SQL := "SELECT role, COUNT(*) as counter FROM data_admin GROUP BY role"
+	SQL := "SELECT role, COUNT(*) as counter FROM data_admin where deleted_at is null GROUP BY role"
 
 	rows, err := tx.QueryContext(ctx, SQL)
 	helper.PanicIfError(err)
