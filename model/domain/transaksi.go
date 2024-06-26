@@ -10,4 +10,7 @@ type Transaksi struct {
 	Tanggal     	time.Time
 	TotalHarga    	int
 	ListKeranjang	interface{}
+	Member	interface{}
+	Admin	interface{}
+
 }

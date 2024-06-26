@@ -127,7 +127,10 @@ func ToTransaksiResponse(keranjang domain.Transaksi) web.TransaksiResponse {
 		NomorMember 	: keranjang.NomorMember, 
 		IdAdmin 		: keranjang.IdAdmin, 
 		Tanggal 		: Tanggal, 
+		TotalHarga 		: keranjang.TotalHarga, 
 		ListKeranjang 	: keranjang.ListKeranjang, 
+		Admin 	: keranjang.Admin, 
+		Member 	: keranjang.Member, 
 	}
 }
 
