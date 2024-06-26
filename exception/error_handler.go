@@ -1,6 +1,7 @@
 package exception
 
 import (
+	"log"
 	"net/http"
 	"toko-buku/helper"
 	"toko-buku/model/web"
@@ -10,56 +11,53 @@ import (
 
 func ErrorHandler(writer http.ResponseWriter, request *http.Request, err interface{}) {
 
-	if notFoundError(writer,request,err){
+	if notFoundError(writer, request, err) {
 		return
 	}
 
-	if validationErrors(writer, request,err){
+	if validationErrors(writer, request, err) {
 		return
 	}
 
 	internalServerError(writer, request, err)
 }
 
-func validationErrors(writer http.ResponseWriter, request *http.Request, err interface{}) bool{
+func validationErrors(writer http.ResponseWriter, request *http.Request, err interface{}) bool {
 	exception, ok := err.(validator.ValidationErrors)
 
-	if ok{
+	if ok {
 		writer.Header().Set("Content-Type", "Application/json")
 		writer.WriteHeader(http.StatusBadRequest)
 
 		webResponse := web.WebResponse{
-			Code:   http.StatusBadRequest,
-			Status: "BAD REQUEST",
-			Message:   exception.Error(),
-			Data:   nil,
+			Code:    http.StatusBadRequest,
+			Status:  "BAD REQUEST",
+			Message: exception.Error(),
+			Data:    nil,
 		}
 		helper.WriteToResponseBody(writer, webResponse)
 		return true
-	}else{
+	} else {
 		return false
 	}
 }
 
-func notFoundError(writer http.ResponseWriter, request *http.Request, err interface{}) bool{
+func notFoundError(writer http.ResponseWriter, request *http.Request, err interface{}) bool {
 	exception, ok := err.(NotFoundError)
 	if ok {
 		writer.Header().Set("Content-Type", "Application/json")
 		writer.WriteHeader(http.StatusNotFound)
 
 		webResponse := web.WebResponse{
-			Code:   http.StatusNotFound,
-			Status: "NOT FOUND",
-			Message:   exception.Error,
-			Data:   nil,
-
-			
-		
+			Code:    http.StatusNotFound,
+			Status:  "NOT FOUND",
+			Message: exception.Error,
+			Data:    nil,
 		}
 		helper.WriteToResponseBody(writer, webResponse)
-		
+
 		return true
-	}else{
+	} else {
 		return false
 	}
 }
@@ -67,12 +65,13 @@ func notFoundError(writer http.ResponseWriter, request *http.Request, err interf
 func internalServerError(writer http.ResponseWriter, request *http.Request, err interface{}) {
 	writer.Header().Set("Content-Type", "Application/json")
 	writer.WriteHeader(http.StatusInternalServerError)
+	log.Println(err)
 
 	webResponse := web.WebResponse{
-		Code:   http.StatusInternalServerError,
-		Status: "INTERNAL SERVER ERROR",
+		Code:    http.StatusInternalServerError,
+		Status:  "INTERNAL SERVER ERROR",
 		Message: "Internal server error, please check your host.",
-		Data:   nil,
+		Data:    nil,
 	}
 
 	helper.WriteToResponseBody(writer, webResponse)
