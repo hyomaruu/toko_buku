@@ -7,4 +7,6 @@ type TransaksiResponse struct {
 	Tanggal     		string 
 	TotalHarga     		int 
 	ListKeranjang	 	interface{}
+	Member	 	interface{}
+	Admin	 	interface{}
 }

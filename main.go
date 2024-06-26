@@ -49,7 +49,7 @@ func main() {
 
 	transaksiRepository := repository.NewTransaksiRepository()
 	transaksiService := service.NewTransaksiService(transaksiRepository,db,validate)
-	transaksiController := controller.NewTransaksiController(transaksiService, keranjangService, bukuService, aksesorisService)
+	transaksiController := controller.NewTransaksiController(transaksiService, keranjangService, bukuService, aksesorisService, adminService, memberService)
 
 
 	authRepository := repository.NewAuthRepositry()

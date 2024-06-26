@@ -16,17 +16,21 @@ type TransaksiControllerImpl struct {
 	KeranjangService service.KeranjangService
 	BukuService service.BukuService
 	AksesorisService service.AksesorisService
+	AdminService service.AdminService
+	MemberService service.MemberService
 	BookDirectoryPath string
 	AccessoryDirectoryPath string
 
 }
 
-func NewTransaksiController(transaksiService service.TransaksiService, keranjangService service.KeranjangService, bukuService service.BukuService, aksesorisService service.AksesorisService) TransaksiController {
+func NewTransaksiController(transaksiService service.TransaksiService, keranjangService service.KeranjangService, bukuService service.BukuService, aksesorisService service.AksesorisService, adminService service.AdminService, memberService service.MemberService) TransaksiController {
 	return &TransaksiControllerImpl{
 		TransaksiService: transaksiService,
 		KeranjangService: keranjangService,
 		BukuService: bukuService,
 		AksesorisService: aksesorisService,
+		AdminService: adminService,
+		MemberService: memberService,
 		BookDirectoryPath: os.Getenv("BOOK_DIRECTORY_PATH"),
 		AccessoryDirectoryPath: os.Getenv("ACCSESSORY_DIRECTORY_PATH"),
 	}
@@ -54,6 +58,20 @@ func (controller *TransaksiControllerImpl) FetchMetaData(request *http.Request, 
     }
 
 	return keranjang
+}
+
+func (controller *TransaksiControllerImpl) FetchMember(request *http.Request, transaksi web.TransaksiResponse) web.TransaksiResponse {
+	memberResponse := controller.MemberService.FindById(request.Context(), transaksi.NomorMember)
+	transaksi.Member = memberResponse
+
+	return transaksi
+}
+
+func (controller *TransaksiControllerImpl) FetchAdmin(request *http.Request, transaksi web.TransaksiResponse) web.TransaksiResponse {
+	adminResponse := controller.AdminService.FindById(request.Context(), transaksi.IdAdmin)
+	transaksi.Admin = adminResponse
+
+	return transaksi
 }
 
 func (controller *TransaksiControllerImpl) ReduceStok(request *http.Request, keranjang web.KeranjangResponse) {
@@ -86,6 +104,8 @@ func (controller *TransaksiControllerImpl) Create(writer http.ResponseWriter, re
 	}
 
 	transaksiResponse.ListKeranjang = keranjangResponses
+	transaksiResponse = controller.FetchAdmin(request,transaksiResponse)
+	transaksiResponse = controller.FetchMember(request,transaksiResponse)
 
 	webResponse := web.WebResponse{
 		Code:   200,
@@ -112,6 +132,8 @@ func (controller *TransaksiControllerImpl) FindById(writer http.ResponseWriter, 
 	}
 
 	transaksiResponse.ListKeranjang = keranjangResponses
+	transaksiResponse = controller.FetchAdmin(request,transaksiResponse)
+	transaksiResponse = controller.FetchMember(request,transaksiResponse)
 	
 	webResponse := web.WebResponse{
 		Code:   200,
@@ -132,8 +154,10 @@ func (controller *TransaksiControllerImpl) FindAll(writer http.ResponseWriter, r
 		for x, keranjangResponse := range keranjangResponses {
 			keranjangResponses[x] = controller.FetchMetaData(request, keranjangResponse)
 		}
-	
+
 		transaksiResponses[i].ListKeranjang = keranjangResponses
+		transaksiResponses[i] = controller.FetchAdmin(request,transaksiResponses[i])
+		transaksiResponses[i] = controller.FetchMember(request,transaksiResponses[i])
 	}
 
 	webResponse := web.WebResponse{

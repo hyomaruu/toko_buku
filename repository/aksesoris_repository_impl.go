@@ -42,7 +42,7 @@ func (repository *AksesorisRepsitoryImpl) UpdateStok(ctx context.Context, tx *sq
 }
 
 func (repository *AksesorisRepsitoryImpl) ReduceStok(ctx context.Context, tx *sql.Tx, aksesoris domain.Aksesoris, aksesorisId string) domain.Aksesoris {
-	SQL := "update aksesoris set stok = - ? where kode = ?"
+	SQL := "update aksesoris set stok = stok - ? where kode = ?"
 	_, err := tx.ExecContext(ctx, SQL, aksesoris.Stok, aksesorisId)
 	helper.PanicIfError(err)
 

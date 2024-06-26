@@ -4,6 +4,7 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"path/filepath"
 	"strings"
 
 	"fmt"
@@ -34,7 +35,6 @@ func HandleUploadImage(request *http.Request, path string, field string) string{
     }
 
     tempFile.Write(fileBytes)
-	return strings.Split(tempFile.Name(), "/")[1]
-	
+    return strings.Split(filepath.ToSlash(tempFile.Name()), "/")[1]
 }
 
