@@ -6,6 +6,7 @@ import (
 	"errors"
 	"toko-buku/helper"
 	"toko-buku/model/domain"
+	"toko-buku/model/web"
 )
 
 type MemberRepositoryImpl struct {
@@ -16,7 +17,7 @@ func NewMemberRepository() MemberRepository {
 }
 
 func (repository *MemberRepositoryImpl) Save(ctx context.Context, tx *sql.Tx, member domain.Member) domain.Member {
-	SQL := "insert into data_member(nama_lengkap,email,telepon,alamat) values (?,?,?,?)"
+	SQL := "insert into data_member(nama_lengkap,email,telepon,alamat,created_at,updated_at) values (?,?,?,?, NOW(), NOW())"
 
 	val, err := tx.ExecContext(ctx, SQL, member.Name, member.Email, member.Telepon, member.Alamat)
 	helper.PanicIfError(err)
@@ -27,18 +28,21 @@ func (repository *MemberRepositoryImpl) Save(ctx context.Context, tx *sql.Tx, me
 
 	return member
 }
+
 func (repository *MemberRepositoryImpl) Update(ctx context.Context, tx *sql.Tx, member domain.Member, memberId int) domain.Member {
-	SQL := "update data_member set nama_lengkap = ?,email = ?, telepon = ?, alamat = ? where id_member = ?"
+	SQL := "update data_member set nama_lengkap = ?,email = ?, telepon = ?, alamat = ?, updated_at = NOW() where id_member = ?"
 	_, err := tx.ExecContext(ctx, SQL, member.Name, member.Email, member.Telepon, member.Alamat, memberId)
 	helper.PanicIfError(err)
 
 	return member
 }
+
 func (repository *MemberRepositoryImpl) Delete(ctx context.Context, tx *sql.Tx, memberId int) {
-	SQL := "delete from data_member where id_member = ?"
+	SQL := "update data_member set deleted_at = NOW() where id_member = ?"
 	_, err := tx.ExecContext(ctx, SQL, memberId)
 	helper.PanicIfError(err)
 }
+
 func (repository *MemberRepositoryImpl) FindById(ctx context.Context, tx *sql.Tx, memberId int) (domain.Member, error) {
 	SQL := "select id_member, nama_lengkap, email, telepon, alamat from data_member where id_member = ?"
 	rows, err := tx.QueryContext(ctx, SQL, memberId)
@@ -54,8 +58,20 @@ func (repository *MemberRepositoryImpl) FindById(ctx context.Context, tx *sql.Tx
 		return member, errors.New("member is not found")
 	}
 }
-func (repository *MemberRepositoryImpl) FindAll(ctx context.Context, tx *sql.Tx) []domain.Member {
-	SQL := "select id_member, nama_lengkap, email, telepon, alamat from data_member"
+
+func (repository *MemberRepositoryImpl) FindAll(ctx context.Context, tx *sql.Tx, request web.FetchRequest) []domain.Member {
+	SQL := "select id_member, nama_lengkap, email, telepon, alamat from data_member";
+
+	SQL += " where deleted_at is null"
+
+	if(request.Keyword != "") {
+		SQL += " and nama_lengkap like '%"+request.Keyword+"%' or email like '%"+request.Keyword+"%' or telepon like '%"+request.Keyword+"%' or alamat like '%"+request.Keyword+"%'"
+	}
+
+	if(request.Sort != "") {
+		SQL += " order by nama_lengkap "+request.Sort+", email "+request.Sort+", telepon "+request.Sort+", alamat "+request.Sort+""
+	}
+
 	rows, err := tx.QueryContext(ctx, SQL)
 	helper.PanicIfError(err)
 	defer rows.Close()

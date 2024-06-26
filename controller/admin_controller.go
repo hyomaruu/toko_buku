@@ -12,4 +12,5 @@ type AdminController interface {
 	Delete(writer http.ResponseWriter, r *http.Request, params httprouter.Params)
 	FindById(writer http.ResponseWriter, r *http.Request, params httprouter.Params)
 	FindAll(writer http.ResponseWriter, r *http.Request, params httprouter.Params)
+	RoleCounter(writer http.ResponseWriter, r *http.Request, params httprouter.Params)
 }

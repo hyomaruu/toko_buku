@@ -10,5 +10,7 @@ type AdminService interface {
 	Update(ctx context.Context, request web.AdminUpdateRequest, adminId int) web.AdminResponse
 	Delete(ctx context.Context, adminId int)
 	FindById(ctx context.Context, adminId int) web.AdminResponse
-	FindAll(ctx context.Context) []web.AdminResponse
+	FindAll(ctx context.Context, request web.FetchRequest) []web.AdminResponse
+	RoleCounter(ctx context.Context) []web.AdminCounterResponse
+
 }

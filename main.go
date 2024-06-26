@@ -66,8 +66,6 @@ func main() {
 	}
 
 	
-	
-
 	fmt.Printf("Server started at %s\n", server.Addr)
 
 	err := server.ListenAndServe()

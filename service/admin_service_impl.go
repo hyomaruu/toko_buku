@@ -91,11 +91,20 @@ func (service *AdminServiceImpl) FindById(ctx context.Context, adminId int) web.
 	return helper.ToAdminResponse(admin)
 }
 
-func (service *AdminServiceImpl) FindAll(ctx context.Context) []web.AdminResponse{
+func (service *AdminServiceImpl) FindAll(ctx context.Context, request web.FetchRequest) []web.AdminResponse{
 	tx,err := service.DB.Begin()
 	helper.PanicIfError(err)
 	defer helper.CommitOrRollback(tx)
 
-	admins := service.AdminRepository.FindAll(ctx,tx)
+	admins := service.AdminRepository.FindAll(ctx,tx, request)
 	return helper.ToAdminResponses(admins)
+}
+
+func (service *AdminServiceImpl) RoleCounter(ctx context.Context) []web.AdminCounterResponse{
+	tx,err := service.DB.Begin()
+	helper.PanicIfError(err)
+	defer helper.CommitOrRollback(tx)
+
+	counters := service.AdminRepository.RoleCounter(ctx,tx)
+	return helper.ToAdminCounterResponses(counters)
 }

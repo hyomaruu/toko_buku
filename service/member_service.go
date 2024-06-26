@@ -10,5 +10,5 @@ type MemberService interface {
 	Update(ctx context.Context, request web.MemberUpdateRequest, memberId int) web.MemberResponse
 	Delete(ctx context.Context, memberId int)
 	FindById(ctx context.Context, memberId int) web.MemberResponse
-	FindAll(ctx context.Context) []web.MemberResponse
+	FindAll(ctx context.Context, request web.FetchRequest) []web.MemberResponse
 }

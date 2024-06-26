@@ -6,6 +6,7 @@ import (
 	"errors"
 	"toko-buku/helper"
 	"toko-buku/model/domain"
+	"toko-buku/model/web"
 )
 
 type AksesorisRepsitoryImpl struct {
@@ -16,7 +17,7 @@ func NewAksesorisRepository() AksesorisRepsitory {
 }
 
 func (repository *AksesorisRepsitoryImpl) Save(ctx context.Context, tx *sql.Tx, aksesoris domain.Aksesoris) domain.Aksesoris {
-	SQL := "insert into aksesoris(kode, nama_barang, deskripsi, gambar, harga) values(?,?,?,?,?)"
+	SQL := "insert into aksesoris(kode, nama_barang, deskripsi, gambar, harga,created_at,updated_at) values(?,?,?,?,?,NOW(), NOW())"
 
 	_, err := tx.ExecContext(ctx, SQL, aksesoris.Id, aksesoris.Name, aksesoris.Deskripsi, aksesoris.Image ,aksesoris.Harga)
 	helper.PanicIfError(err)
@@ -49,7 +50,7 @@ func (repository *AksesorisRepsitoryImpl) ReduceStok(ctx context.Context, tx *sq
 }
 
 func (repository *AksesorisRepsitoryImpl) Delete(ctx context.Context, tx *sql.Tx, aksesorisId string) {
-	SQL := "delete from aksesoris where kode = ?"
+	SQL := "update aksesoris set deleted_at = NOW() where kode = ?"
 	_, err := tx.ExecContext(ctx, SQL, aksesorisId)
 	helper.PanicIfError(err)
 }
@@ -70,8 +71,19 @@ func (repository *AksesorisRepsitoryImpl) FindById(ctx context.Context, tx *sql.
 	}
 }
 
-func (repository *AksesorisRepsitoryImpl) FindAll(ctx context.Context, tx *sql.Tx) []domain.Aksesoris {
-	SQL := "select kode, nama_barang, deskripsi, harga, gambar, stok from aksesoris"
+func (repository *AksesorisRepsitoryImpl) FindAll(ctx context.Context, tx *sql.Tx, request web.FetchRequest) []domain.Aksesoris {
+	SQL := "select kode, nama_barang, deskripsi, harga, gambar, stok from aksesoris";
+
+	SQL += " where deleted_at is null"
+
+	if(request.Keyword != "") {
+		SQL += " and nama_barang like '%"+request.Keyword+"%' or deskripsi like '%"+request.Keyword+"%'"
+	}
+
+	if(request.Sort != "") {
+		SQL += " order by nama_barang "+request.Sort+", deskripsi "+request.Sort+""
+	}
+
 	rows, err := tx.QueryContext(ctx, SQL)
 	helper.PanicIfError(err)
 	defer rows.Close()

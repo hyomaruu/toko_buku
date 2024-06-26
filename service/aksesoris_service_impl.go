@@ -123,11 +123,11 @@ func(service *AksesorisServiceImpl) FindById(ctx context.Context, aksesorisId st
 	return helper.ToAksesorisResponse(aksesoris)
 }
 
-func(service *AksesorisServiceImpl) FindAll(ctx context.Context) []web.AksesorisResponse{
+func(service *AksesorisServiceImpl) FindAll(ctx context.Context,request web.FetchRequest) []web.AksesorisResponse{
 	tx, err := service.DB.Begin()
 	helper.PanicIfError(err)
 	defer helper.CommitOrRollback(tx)
 
-	aksesoriss := service.AksesorisRepository.FindAll(ctx,tx)
+	aksesoriss := service.AksesorisRepository.FindAll(ctx,tx, request)
 	return helper.ToAksesorisResponses(aksesoriss)
 }

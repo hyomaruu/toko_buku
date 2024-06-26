@@ -22,6 +22,22 @@ func ToAdminResponses(admins []domain.Admin) []web.AdminResponse {
 	return adminResponses
 }
 
+func ToAdminCounterResponse(adminCounter domain.AdminCounter) web.AdminCounterResponse {
+	return web.AdminCounterResponse{
+		Role:     adminCounter.Role,
+		Counter:     adminCounter.Counter,
+
+	}
+}
+
+func ToAdminCounterResponses(adminCounters []domain.AdminCounter) []web.AdminCounterResponse {
+	var adminResponses []web.AdminCounterResponse
+	for _, adminCounter := range adminCounters {
+		adminResponses = append(adminResponses, ToAdminCounterResponse(adminCounter))
+	}
+	return adminResponses
+}
+
 func ToMemberResponse(member domain.Member) web.MemberResponse {
 	return web.MemberResponse{
 		Id:      member.Id,

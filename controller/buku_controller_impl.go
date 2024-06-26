@@ -43,7 +43,7 @@ func(controller *BukuControllerImpl) Create(writer http.ResponseWriter, request 
 	}
 
 	bukuResponse := controller.BukuService.Create(request.Context(), bukuCreateRequest)
-	bukuResponse.Image = request.Host + "/"+ controller.BookDirectoryPath +"/" + bukuResponse.Image
+	bukuResponse.Image = "http://" + request.Host + "/"+ controller.BookDirectoryPath +"/" + bukuResponse.Image
 	webResponse := web.WebResponse{
 		Code: 200,
 		Status: "OK",
@@ -75,7 +75,7 @@ func(controller *BukuControllerImpl) Update(writer http.ResponseWriter, request 
 	}
 	
 	bukuResponse := controller.BukuService.Update(request.Context(), bukuUpdateRequest, bukuId)
-	bukuResponse.Image = request.Host + "/"+ controller.BookDirectoryPath +"/" + bukuResponse.Image
+	bukuResponse.Image = "http://" + request.Host + "/"+ controller.BookDirectoryPath +"/" + bukuResponse.Image
 	webResponse := web.WebResponse{
 		Code: 200,
 		Status: "OK",
@@ -93,7 +93,7 @@ func(controller *BukuControllerImpl) UpdateStok(writer http.ResponseWriter, requ
 	id := params.ByName("bukuId")
 
 	bukuResponse := controller.BukuService.UpdateStok(request.Context(), bukuUpdateStockRequest, id)
-	bukuResponse.Image = request.Host + "/"+ controller.BookDirectoryPath +"/"  + bukuResponse.Image
+	bukuResponse.Image = "http://" + request.Host + "/"+ controller.BookDirectoryPath +"/"  + bukuResponse.Image
 
 	webResponse := web.WebResponse{
 		Code: 200,
@@ -120,7 +120,7 @@ func(controller *BukuControllerImpl) FindById(writer http.ResponseWriter,request
 	bukuId := params.ByName("bukuId")
 
 	bukuResponse := controller.BukuService.FindById(request.Context(), bukuId)
-	bukuResponse.Image = request.Host +  "/"+ controller.BookDirectoryPath +"/" + bukuResponse.Image
+	bukuResponse.Image = "http://" + request.Host +  "/"+ controller.BookDirectoryPath +"/" + bukuResponse.Image
 	webResponse := web.WebResponse{
 		Code: 200,
 		Status: "OK",
@@ -131,10 +131,13 @@ func(controller *BukuControllerImpl) FindById(writer http.ResponseWriter,request
 }
 
 func(controller *BukuControllerImpl) FindAll(writer http.ResponseWriter,request *http.Request,params httprouter.Params){
-	bukuResponses := controller.BukuService.FindAll(request.Context())
+	FetchRequest := web.FetchRequest{}
+	helper.ReadQueryParams(request, &FetchRequest)
+	
+	bukuResponses := controller.BukuService.FindAll(request.Context(), FetchRequest)
 
 	for i, buku := range bukuResponses {
-		bukuResponses[i].Image = request.Host +  "/"+ controller.BookDirectoryPath +"/" + buku.Image
+		bukuResponses[i].Image = "http://" + request.Host +  "/"+ controller.BookDirectoryPath +"/" + buku.Image
 	}
 
 	webResponse := web.WebResponse{

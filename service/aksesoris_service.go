@@ -12,5 +12,5 @@ type AksesorisService interface {
 	ReduceStok(ctx context.Context, qty int, aksesorisId string) web.AksesorisResponse
 	Delete(ctx context.Context, aksesorisId string)
 	FindById(ctx context.Context, aksesorisId string) web.AksesorisResponse
-	FindAll(ctx context.Context) []web.AksesorisResponse
+	FindAll(ctx context.Context, request web.FetchRequest) []web.AksesorisResponse
 }

@@ -12,5 +12,5 @@ type BukuService interface {
 	ReduceStok(ctx context.Context,qty int, bukuId string) web.BukuResponse
 	Delete(ctx context.Context, bukuId string)
 	FindById(ctx context.Context, bukuId string) web.BukuResponse
-	FindAll(ctx context.Context) []web.BukuResponse
+	FindAll(ctx context.Context, request web.FetchRequest) []web.BukuResponse
 }

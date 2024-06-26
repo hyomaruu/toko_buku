@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"toko-buku/model/domain"
+	"toko-buku/model/web"
 )
 
 type BukuRepository interface {
@@ -13,5 +14,5 @@ type BukuRepository interface {
 	ReduceStok(ctx context.Context, tx *sql.Tx, buku domain.Buku, bukuId string) domain.Buku
 	Delete(ctx context.Context, tx *sql.Tx, bukuId string)
 	FindById(ctx context.Context,tx *sql.Tx, bukuId string) (domain.Buku, error)
-	FindAll(ctx context.Context, tx *sql.Tx) []domain.Buku
+	FindAll(ctx context.Context, tx *sql.Tx, request web.FetchRequest) []domain.Buku
 }

@@ -139,11 +139,11 @@ func (service *BukuServiceImpl) FindById(ctx context.Context, bukuId string) web
 	return helper.ToBukuResponse(buku)
 }
 
-func (service *BukuServiceImpl) FindAll(ctx context.Context) []web.BukuResponse {
+func (service *BukuServiceImpl) FindAll(ctx context.Context, request web.FetchRequest) []web.BukuResponse {
 	tx, err := service.DB.Begin()
 	helper.PanicIfError(err)
 	defer helper.CommitOrRollback(tx)
 
-	bukus := service.BukuRepository.FindAll(ctx, tx)
+	bukus := service.BukuRepository.FindAll(ctx, tx, request)
 	return helper.ToBukuResponses(bukus)
 }

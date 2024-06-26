@@ -89,11 +89,11 @@ func(service *MemberServiceImpl) FindById(ctx context.Context, memberId int)web.
 	return helper.ToMemberResponse(member)
 }
 
-func(service *MemberServiceImpl) FindAll(ctx context.Context) []web.MemberResponse{
+func(service *MemberServiceImpl) FindAll(ctx context.Context, request web.FetchRequest) []web.MemberResponse{
 	tx,err := service.DB.Begin()
 	helper.PanicIfError(err)
 	defer helper.CommitOrRollback(tx)
 
-	members := service.MemberRepository.FindAll(ctx,tx)
+	members := service.MemberRepository.FindAll(ctx,tx, request)
 	return helper.ToMemberResponses(members)
 }

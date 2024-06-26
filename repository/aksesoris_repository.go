@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"toko-buku/model/domain"
+	"toko-buku/model/web"
 )
 
 type AksesorisRepsitory interface {
@@ -13,5 +14,5 @@ type AksesorisRepsitory interface {
 	ReduceStok(ctx context.Context,tx *sql.Tx,aksesoris domain.Aksesoris, aksesorisId string) domain.Aksesoris
 	Delete(ctx context.Context, tx *sql.Tx, aksesorisId string)
 	FindById(ctx context.Context,tx *sql.Tx, aksesorisId string)(domain.Aksesoris, error)
-	FindAll(ctx context.Context,tx *sql.Tx) []domain.Aksesoris
+	FindAll(ctx context.Context,tx *sql.Tx, request web.FetchRequest) []domain.Aksesoris
 }

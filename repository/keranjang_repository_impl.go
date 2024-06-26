@@ -47,7 +47,7 @@ func (repository *KeranjangRepositoryImpl) UpdateKodeTransaksi(ctx context.Conte
 }
 
 func (repository *KeranjangRepositoryImpl) Delete(ctx context.Context, tx *sql.Tx, keranjangId int) {
-	SQL := "delete from keranjang where kode_keranjang = ?"
+	SQL := "update keranjang set deleted_at = NOW() where kode_keranjang = ?"
 	_, err := tx.ExecContext(ctx, SQL, keranjangId)
 	helper.PanicIfError(err)
 }
@@ -69,7 +69,7 @@ func (repository *KeranjangRepositoryImpl) FindById(ctx context.Context, tx *sql
 }
 
 func (repository *KeranjangRepositoryImpl) FindAll(ctx context.Context, tx *sql.Tx) []domain.Keranjang {
-	SQL := "select kode_keranjang, tipe_barang, kode_barang, total_barang, harga from keranjang"
+	SQL := "select kode_keranjang, tipe_barang, kode_barang, total_barang, harga from keranjang where deleted_at is null and kode_transaksi is null"
 	rows, err := tx.QueryContext(ctx, SQL)
 	helper.PanicIfError(err)
 	defer rows.Close()

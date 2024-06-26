@@ -39,7 +39,7 @@ func(controller *AksesorisControllerImpl) Create(writer http.ResponseWriter, req
 	}
 
 	aksesorisResponse := controller.AksesorisService.Create(request.Context(), aksesorisCreateRequest)
-	aksesorisResponse.Image = request.Host + "/"+ controller.AccessoryDirectoryPath +"/" + aksesorisResponse.Image
+	aksesorisResponse.Image = "http://" + request.Host + "/"+ controller.AccessoryDirectoryPath +"/" + aksesorisResponse.Image
 	webResponse := web.WebResponse{
 		Code: 200,
 		Status: "OK",
@@ -67,7 +67,7 @@ func(controller *AksesorisControllerImpl) Update(writer http.ResponseWriter, req
 	}
 
 	aksesorisResponse := controller.AksesorisService.Update(request.Context(), aksesorisUpdateRequest, id)
-	aksesorisResponse.Image = request.Host + "/"+ controller.AccessoryDirectoryPath +"/"  + aksesorisResponse.Image
+	aksesorisResponse.Image = "http://" + request.Host + "/"+ controller.AccessoryDirectoryPath +"/"  + aksesorisResponse.Image
 
 	webResponse := web.WebResponse{
 		Code: 200,
@@ -85,7 +85,7 @@ func(controller *AksesorisControllerImpl) UpdateStok(writer http.ResponseWriter,
 	id := params.ByName("aksesorisId")
 
 	aksesorisResponse := controller.AksesorisService.UpdateStok(request.Context(), aksesorisUpdateStockRequest, id)
-	aksesorisResponse.Image = request.Host + "/"+ controller.AccessoryDirectoryPath +"/"  + aksesorisResponse.Image
+	aksesorisResponse.Image = "http://" + request.Host + "/"+ controller.AccessoryDirectoryPath +"/"  + aksesorisResponse.Image
 
 	webResponse := web.WebResponse{
 		Code: 200,
@@ -112,7 +112,7 @@ func(controller *AksesorisControllerImpl) FindById(writer http.ResponseWriter, r
 	id := params.ByName("aksesorisId")
 
 	aksesorisResponse := controller.AksesorisService.FindById(request.Context(), id)
-	aksesorisResponse.Image = request.Host +  "/"+ controller.AccessoryDirectoryPath +"/"  + aksesorisResponse.Image
+	aksesorisResponse.Image = "http://" + request.Host +  "/"+ controller.AccessoryDirectoryPath +"/"  + aksesorisResponse.Image
 	webResponse := web.WebResponse{
 		Code: 200,
 		Status: "OK",
@@ -123,10 +123,13 @@ func(controller *AksesorisControllerImpl) FindById(writer http.ResponseWriter, r
 }
 
 func(controller *AksesorisControllerImpl) FindAll(writer http.ResponseWriter, request *http.Request,params httprouter.Params){
-	aksesorisResponses := controller.AksesorisService.FindAll(request.Context())
+	FetchRequest := web.FetchRequest{}
+	helper.ReadQueryParams(request, &FetchRequest)
+
+	aksesorisResponses := controller.AksesorisService.FindAll(request.Context(),FetchRequest)
 
 	for i, aksesoris := range aksesorisResponses {
-		aksesorisResponses[i].Image = request.Host +  "/" + controller.AccessoryDirectoryPath + "/"  + aksesoris.Image
+		aksesorisResponses[i].Image = "http://" + request.Host +  "/" + controller.AccessoryDirectoryPath + "/"  + aksesoris.Image
 	}
 
 	webResponse := web.WebResponse{

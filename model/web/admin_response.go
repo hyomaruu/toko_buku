@@ -6,3 +6,8 @@ type AdminResponse struct {
 	Name     string 
 	Role     string 
 }
+
+type AdminCounterResponse struct {
+	Role 		string 
+	Counter     int64 
+}

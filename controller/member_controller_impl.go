@@ -86,7 +86,10 @@ func (controller *MemberControllerImpl) FindById(writer http.ResponseWriter, req
 }
 
 func (controller *MemberControllerImpl) FindAll(writer http.ResponseWriter, request *http.Request, params httprouter.Params) {
-	memberResponses := controller.MemberService.FindAll(request.Context())
+	FetchRequest := web.FetchRequest{}
+	helper.ReadQueryParams(request, &FetchRequest)
+	
+	memberResponses := controller.MemberService.FindAll(request.Context(), FetchRequest)
 	webResponse := web.WebResponse{
 		Code:   200,
 		Status: "OK",

@@ -44,12 +44,12 @@ func (controller *TransaksiControllerImpl) FetchMetaData(request *http.Request, 
 	}
 
 	if dataAksesoris, ok := keranjang.Barang.(web.AksesorisResponse); ok {
-		dataAksesoris.Image = request.Host + "/"+ controller.AccessoryDirectoryPath +"/"  + dataAksesoris.Image
+		dataAksesoris.Image = "http://" + request.Host + "/"+ controller.AccessoryDirectoryPath +"/"  + dataAksesoris.Image
 		keranjang.Barang = dataAksesoris
     }
 
 	if dataBuku, ok := keranjang.Barang.(web.BukuResponse); ok {
-		dataBuku.Image = request.Host + "/"+ controller.BookDirectoryPath +"/"  + dataBuku.Image
+		dataBuku.Image = "http://" + request.Host + "/"+ controller.BookDirectoryPath +"/"  + dataBuku.Image
 		keranjang.Barang = dataBuku
     }
 
@@ -73,7 +73,8 @@ func (controller *TransaksiControllerImpl) Create(writer http.ResponseWriter, re
 	transaksiResponse := controller.TransaksiService.Create(request.Context(), TransaksiCreateRequest)
 
 	for _, keranjangId := range TransaksiCreateRequest.ListKeranjang {
-		controller.KeranjangService.UpdateKodeTransaksi(request.Context(), keranjangId, int(transaksiResponse.KodeTransaksi) )
+		id, _ := strconv.Atoi(keranjangId)
+		controller.KeranjangService.UpdateKodeTransaksi(request.Context(), id, int(transaksiResponse.KodeTransaksi) )
 	}
 	
 	transaksiResponse = controller.TransaksiService.FindById(request.Context(), int(transaksiResponse.KodeTransaksi))

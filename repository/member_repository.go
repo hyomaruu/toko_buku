@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"toko-buku/model/domain"
+	"toko-buku/model/web"
 )
 
 type MemberRepository interface {
@@ -15,5 +16,7 @@ type MemberRepository interface {
 
 	FindById(ctx context.Context, tx *sql.Tx, memberId int) (domain.Member, error)
 
-	FindAll(ctx context.Context, tx *sql.Tx) []domain.Member
+	FindAll(ctx context.Context, tx *sql.Tx, request web.FetchRequest) []domain.Member
+
+	
 }

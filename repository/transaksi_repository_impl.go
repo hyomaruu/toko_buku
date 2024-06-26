@@ -16,11 +16,10 @@ func NewTransaksiRepository() TransaksiRepository {
 }
 
 func (repository *TransaksiRepositoryImpl) Save(ctx context.Context, tx *sql.Tx, transaksi domain.Transaksi) domain.Transaksi {
-	SQL := "insert into transaksi(kode_transaksi,nomor_member,id_admin,tanggal,total_harga) values (?,?,?,?,?)"
+	SQL := "insert into transaksi(kode_transaksi,nomor_member,id_admin,tanggal,total_harga,created_at,updated_at) values (?,?,?,?,?,NOW(),NOW())"
 
 	val, err := tx.ExecContext(ctx, SQL, transaksi.KodeTransaksi, transaksi.NomorMember, transaksi.IdAdmin, transaksi.Tanggal, transaksi.TotalHarga)
 	helper.PanicIfError(err)
-
 	id, err := val.LastInsertId()
 
 	transaksi.KodeTransaksi = id
@@ -29,7 +28,7 @@ func (repository *TransaksiRepositoryImpl) Save(ctx context.Context, tx *sql.Tx,
 }
 
 func (repository *TransaksiRepositoryImpl) FindById(ctx context.Context, tx *sql.Tx, transaksiId int) (domain.Transaksi, error) {
-	SQL := "select * from transaksi where kode_transaksi = ?"
+	SQL := "select kode_transaksi, nomor_member, id_admin, tanggal, total_harga from transaksi where kode_transaksi = ?"
 	rows, err := tx.QueryContext(ctx, SQL, transaksiId)
 	helper.PanicIfError(err)
 	defer rows.Close()
@@ -45,7 +44,7 @@ func (repository *TransaksiRepositoryImpl) FindById(ctx context.Context, tx *sql
 }
 
 func (repository *TransaksiRepositoryImpl) FindAll(ctx context.Context, tx *sql.Tx) []domain.Transaksi {
-	SQL := "select * from transaksi"
+	SQL := "select kode_transaksi, nomor_member, id_admin, tanggal, total_harga from transaksi"
 	rows, err := tx.QueryContext(ctx, SQL)
 	helper.PanicIfError(err)
 	defer rows.Close()

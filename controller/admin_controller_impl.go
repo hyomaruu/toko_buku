@@ -21,15 +21,6 @@ func NewAdminController(adminService service.AdminService) AdminController {
 }
 
 func (controller *AdminControllerImpl) Create(writer http.ResponseWriter, request *http.Request, params httprouter.Params) {
-	// writer.Header().Set("Access-Control-Allow-Origin", "http://localhost:4200")
-	// writer.Header().Set("Access-Control-Allow-Methods", "POST")
-	// writer.Header().Set("Access-Control-Allow-Headers", "*")
-
-	// if request.Method == "OPTIONS" {
-	// 	writer.Write([]byte("allowed"))
-	// 	return
-	// }
-
 	AdminCreateRequest := web.AdminCreateRequest{}
 	helper.ReadFromRequestBody(request, &AdminCreateRequest)
 
@@ -95,11 +86,26 @@ func (controller *AdminControllerImpl) FindById(writer http.ResponseWriter, requ
 }
 
 func (controller *AdminControllerImpl) FindAll(writer http.ResponseWriter, request *http.Request, params httprouter.Params) {
-	adminResponses := controller.AdminService.FindAll(request.Context())
+	FetchRequest := web.FetchRequest{}
+	helper.ReadQueryParams(request, &FetchRequest)
+
+	adminResponses := controller.AdminService.FindAll(request.Context(), FetchRequest)
 	webResponse := web.WebResponse{
 		Code:   200,
 		Status: "OK",
 		Data:   adminResponses,
+		Message: "Successfully fetch data",
+	}
+
+	helper.WriteToResponseBody(writer, webResponse)
+}
+
+func (controller *AdminControllerImpl) RoleCounter(writer http.ResponseWriter, request *http.Request, params httprouter.Params) {
+	counterResponse := controller.AdminService.RoleCounter(request.Context())
+	webResponse := web.WebResponse{
+		Code:   200,
+		Status: "OK",
+		Data:   counterResponse,
 		Message: "Successfully fetch data",
 	}
 
