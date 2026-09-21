@@ -1,0 +1,22 @@
+{
+  "files.watcherExclude": {
+    "**/node_modules/**": true,
+    "**/.git/objects/**": true,
+    "**/dist/**": true,
+    "**/build/**": true,
+    "**/uploaded-book-images/**": true,
+    "**/uploaded-accessory-images/**": true
+  },
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/dist": true,
+    "**/build": true,
+    "**/uploaded-book-images": true,
+    "**/uploaded-accessory-images": true
+  },
+  "files.exclude": {
+    "**/node_modules": true,
+    "**/dist": true,
+    "**/build": true
+  }
+}
